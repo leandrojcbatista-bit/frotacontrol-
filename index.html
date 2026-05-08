@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#060C1A"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="FrotaControl"/>
+<title>FrotaControl</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="splash">
+  <div class="splash-content">
+    <div class="splash-icon">
+      <svg viewBox="0 0 56 56" fill="none"><path d="M7 26l6-12a2 2 0 012-1h26a2 2 0 012 1l6 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="5" y="25" width="46" height="17" rx="5" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2"/><circle cx="15" cy="44" r="5" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="2.5"/><circle cx="15" cy="44" r="2" fill="#fff"/><circle cx="41" cy="44" r="5" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="2.5"/><circle cx="41" cy="44" r="2" fill="#fff"/><rect x="15" y="15" width="12" height="10" rx="1.5" fill="rgba(255,255,255,.3)"/><rect x="29" y="15" width="12" height="10" rx="1.5" fill="rgba(255,255,255,.3)"/><rect x="3" y="29" width="6" height="8" rx="2" fill="rgba(255,255,255,.35)"/><rect x="47" y="29" width="6" height="8" rx="2" fill="rgba(255,255,255,.35)"/></svg>
+    </div>
+    <h1>FrotaControl</h1>
+    <p>Sistema de Controle de Frota</p>
+    <div class="splash-bar-wrap"><div class="splash-bar-fill"></div></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="screen hidden">
+  <div class="login-bg">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  </div>
+  <div class="login-container">
+    <div class="login-head">
+      <div class="login-logo">
+        <svg viewBox="0 0 56 56" fill="none"><path d="M7 26l6-12a2 2 0 012-1h26a2 2 0 012 1l6 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="5" y="25" width="46" height="17" rx="5" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="2"/><circle cx="15" cy="44" r="5" fill="rgba(255,255,255,.1)" stroke="#fff" stroke-width="2.5"/><circle cx="15" cy="44" r="2" fill="#fff"/><circle cx="41" cy="44" r="5" fill="rgba(255,255,255,.1)" stroke="#fff" stroke-width="2.5"/><circle cx="41" cy="44" r="2" fill="#fff"/></svg>
+      </div>
+      <h1>FrotaControl</h1>
+      <p>Controle inteligente da sua frota</p>
+    </div>
+    <div class="login-card">
+      <h2>Acesse sua conta</h2>
+      <div class="field">
+        <label>Usuário</label>
+        <div class="input-ico">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z"/></svg>
+          <input type="text" id="loginUser" placeholder="Seu usuário de acesso" autocomplete="username"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <div class="input-ico">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a4 4 0 00-4 4v1H5a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V6a4 4 0 00-4-4zm1 11.586V15a1 1 0 11-2 0v-1.414A2 2 0 1111 13.586z"/></svg>
+          <input type="password" id="loginPass" placeholder="Sua senha" autocomplete="current-password"/>
+          <button type="button" class="eye-btn" onclick="togglePass()">👁</button>
+        </div>
+      </div>
+      <div id="loginErr" class="alert-err hidden"></div>
+      <button class="btn-primary w-full" id="loginBtn" onclick="doLogin()">
+        <span id="loginTxt">Entrar</span>
+        <div id="loginLoad" class="spin-sm hidden"></div>
+      </button>
+      <div class="demo-box">
+        <p>Contas demo:</p>
+        <div class="demo-row">
+          <button onclick="fillDemo('admin','admin123')"><b>Admin</b> admin/admin123</button>
+          <button onclick="fillDemo('motorista','motor123')"><b>Motorista</b> motorista/motor123</button>
+          <button onclick="fillDemo('supervisor','super123')"><b>Supervisor</b> supervisor/super123</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="tb-l">
+      <button class="ham" onclick="openSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="tb-brand">
+        <span class="tb-name">FrotaControl</span>
+        <span class="tb-sec" id="tbSec">Dashboard</span>
+      </div>
+    </div>
+    <div class="tb-r">
+      <span class="offline-dot hidden" id="offlineDot"></span>
+      <button class="ava-btn" onclick="toggleUserMenu()">
+        <div class="ava" id="avaTop">A</div>
+      </button>
+    </div>
+  </header>
+
+  <!-- USER MENU -->
+  <div class="udropdown hidden" id="udropdown">
+    <div class="ud-top">
+      <div class="ava lg" id="avaDropdown">A</div>
+      <div><strong id="udName">Admin</strong><br/><span class="rpill" id="udRole">admin</span></div>
+    </div>
+    <div class="ud-div"></div>
+    <button class="ud-btn" onclick="navigateTo('configuracoes');closeUserMenu()">⚙️ Configurações</button>
+    <button class="ud-btn red" onclick="doLogout()">🚪 Sair do sistema</button>
+  </div>
+
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sb-overlay hidden" id="sbOverlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar hidden" id="sidebar">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <div class="sb-ico">🚗</div>
+        <div><div class="sb-bname">FrotaControl</div><div class="sb-bver">v1.0</div></div>
+      </div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-grp-label">Principal</div>
+      <button class="sb-link active" data-s="dashboard" onclick="navigateTo('dashboard')">📊 Dashboard</button>
+      <button class="sb-link" data-s="saida" onclick="navigateTo('saida')">🚀 Registrar Saída</button>
+      <button class="sb-link" data-s="retorno" onclick="navigateTo('retorno')">🏁 Registrar Retorno</button>
+      <button class="sb-link" data-s="viagens" onclick="navigateTo('viagens')">📋 Histórico de Viagens</button>
+      <div class="sb-grp-label perm-sv perm-ad">Gestão</div>
+      <button class="sb-link perm-sv perm-ad" data-s="veiculos" onclick="navigateTo('veiculos')">🚙 Veículos</button>
+      <button class="sb-link perm-sv perm-ad" data-s="motoristas" onclick="navigateTo('motoristas')">👨‍✈️ Motoristas</button>
+      <button class="sb-link perm-sv perm-ad" data-s="relatorios" onclick="navigateTo('relatorios')">📈 Relatórios</button>
+      <div class="sb-grp-label perm-ad">Sistema</div>
+      <button class="sb-link perm-ad" data-s="configuracoes" onclick="navigateTo('configuracoes')">⚙️ Configurações</button>
+    </div>
+    <div class="sb-foot">
+      <button class="sb-link red" onclick="doLogout()">🚪 Sair</button>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO -->
+  <main class="content" id="content">
+
+    <!-- === DASHBOARD === -->
+    <section class="sec active" id="sec-dashboard">
+      <div class="ph">
+        <div><h2 class="pt">Dashboard</h2><p class="ps" id="dashDate"></p></div>
+        <button class="icoBtn" onclick="loadDashboard()" title="Atualizar">🔄</button>
+      </div>
+      <div class="stats">
+        <div class="stat green"><span class="stat-ic">✅</span><div><div class="stat-v" id="stDisp">--</div><div class="stat-l">Disponíveis</div></div></div>
+        <div class="stat orange"><span class="stat-ic">🔴</span><div><div class="stat-v" id="stEmUso">--</div><div class="stat-l">Em Uso</div></div></div>
+        <div class="stat blue"><span class="stat-ic">📏</span><div><div class="stat-v" id="stKm">--</div><div class="stat-l">KM Hoje</div></div></div>
+        <div class="stat purple"><span class="stat-ic">🗺️</span><div><div class="stat-v" id="stVg">--</div><div class="stat-l">Viagens</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>🔴 Em viagem agora</h3><span class="pill orange" id="pillAtivas">0</span></div>
+        <div id="dashAtivas"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>⚠️ Alertas</h3><span class="pill red hidden" id="pillAlertas">0</span></div>
+        <div id="dashAlertas"></div>
+      </div>
+    </section>
+
+    <!-- === SAÍDA === -->
+    <section class="sec hidden" id="sec-saida">
+      <div class="ph"><h2 class="pt">🚀 Registrar Saída</h2></div>
+      <div class="form-card">
+        <div class="field"><label>Veículo <span class="req">*</span></label>
+          <select id="sVeiculo" onchange="onVeiculoSel()"><option value="">— Selecione o veículo —</option></select></div>
+        <div id="veicPrev" class="prev-card hidden">
+          <div class="prow"><span class="pk">Modelo</span><span id="pvModelo"></span></div>
+          <div class="prow"><span class="pk">KM Atual</span><span id="pvKm"></span></div>
+          <div class="prow"><span class="pk">Setor</span><span id="pvSetor"></span></div>
+          <div class="prow"><span class="pk">Status</span><span id="pvStatus" class="bst"></span></div>
+        </div>
+        <div class="field"><label>Motorista <span class="req">*</span></label>
+          <select id="sMotorista"><option value="">— Selecione o motorista —</option></select></div>
+        <div class="row2">
+          <div class="field"><label>Data <span class="req">*</span></label><input type="date" id="sData"/></div>
+          <div class="field"><label>Hora <span class="req">*</span></label><input type="time" id="sHora"/></div>
+        </div>
+        <div class="field"><label>KM Inicial <span class="req">*</span></label><input type="number" id="sKmIni" placeholder="Ex: 45230" min="0"/></div>
+        <div class="field"><label>Destino <span class="req">*</span></label><input type="text" id="sDestino" placeholder="Para onde vai?"/></div>
+        <div class="field"><label>Motivo da Viagem <span class="req">*</span></label><textarea id="sMotivo" rows="3" placeholder="Descreva o motivo..."></textarea></div>
+        <div class="row2">
+          <div class="field"><label>Combustível</label>
+            <select id="sComb"><option>Cheio</option><option>3/4</option><option>1/2</option><option>1/4</option><option>Reserva</option></select></div>
+          <div class="field"><label>Passageiros</label><input type="number" id="sPassNum" placeholder="0" min="0"/></div>
+        </div>
+        <div class="field"><label>Nome dos Passageiros</label><textarea id="sPassNomes" rows="2" placeholder="Nomes separados por vírgula..."></textarea></div>
+        <div class="field"><label>GPS de Saída</label>
+          <div class="gps-row"><input type="text" id="sGeo" placeholder="Lat, Long" readonly/><button type="button" class="btn-gps" onclick="capturarGPS('saida')">📍 GPS</button></div></div>
+        <div class="field"><label>Observações</label><textarea id="sObs" rows="2" placeholder="Observações adicionais..."></textarea></div>
+        <div id="saidaErr" class="alert-err hidden"></div>
+        <button class="btn-primary w-full btn-xl" onclick="registrarSaida()">🚀 INICIAR VIAGEM</button>
+      </div>
+    </section>
+
+    <!-- === RETORNO === -->
+    <section class="sec hidden" id="sec-retorno">
+      <div class="ph"><h2 class="pt">🏁 Registrar Retorno</h2></div>
+      <div class="form-card">
+        <div class="field"><label>Viagem em andamento <span class="req">*</span></label>
+          <select id="rViagem" onchange="onViagemSel()"><option value="">— Selecione a viagem —</option></select></div>
+        <div id="viagemPrev" class="prev-card hidden">
+          <div class="prow"><span class="pk">Veículo</span><span id="rvPlaca"></span></div>
+          <div class="prow"><span class="pk">Motorista</span><span id="rvMot"></span></div>
+          <div class="prow"><span class="pk">Destino</span><span id="rvDest"></span></div>
+          <div class="prow"><span class="pk">KM Saída</span><span id="rvKmS"></span></div>
+          <div class="prow"><span class="pk">Saiu às</span><span id="rvHora"></span></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Data Retorno <span class="req">*</span></label><input type="date" id="rData"/></div>
+          <div class="field"><label>Hora Retorno <span class="req">*</span></label><input type="time" id="rHora"/></div>
+        </div>
+        <div class="field"><label>KM Final <span class="req">*</span></label><input type="number" id="rKmFinal" placeholder="Ex: 45480" min="0" oninput="calcKm()"/></div>
+        <div id="kmBox" class="info-box hidden">📏 KM rodados: <strong id="kmVal">--</strong></div>
+        <div class="field"><label>Combustível Restante</label>
+          <select id="rComb"><option>Cheio</option><option>3/4</option><option value="1/2" selected>1/2</option><option>1/4</option><option>Reserva</option></select></div>
+        <div class="field"><label>GPS de Retorno</label>
+          <div class="gps-row"><input type="text" id="rGeo" placeholder="Lat, Long" readonly/><button type="button" class="btn-gps" onclick="capturarGPS('retorno')">📍 GPS</button></div></div>
+        <div class="field"><label>Ocorrências / Observações</label><textarea id="rOcorr" rows="3" placeholder="Alguma ocorrência durante a viagem?"></textarea></div>
+        <div id="retornoErr" class="alert-err hidden"></div>
+        <button class="btn-success w-full btn-xl" onclick="registrarRetorno()">🏁 FINALIZAR VIAGEM</button>
+      </div>
+    </section>
+
+    <!-- === VIAGENS === -->
+    <section class="sec hidden" id="sec-viagens">
+      <div class="ph">
+        <h2 class="pt">📋 Histórico</h2>
+        <button class="icoBtn" onclick="loadViagens()">🔄</button>
+      </div>
+      <div class="filters">
+        <input type="text" id="fVBusca" placeholder="🔍 Placa, motorista, destino..." oninput="filtrarViagens()"/>
+        <div class="filters-row">
+          <input type="date" id="fVDe" title="De" onchange="filtrarViagens()"/>
+          <input type="date" id="fVAte" title="Até" onchange="filtrarViagens()"/>
+          <select id="fVSt" onchange="filtrarViagens()">
+            <option value="">Todos</option><option value="em andamento">Em andamento</option><option value="concluída">Concluídas</option>
+          </select>
+        </div>
+      </div>
+      <div id="viagensList" class="list"></div>
+    </section>
+
+    <!-- === VEÍCULOS === -->
+    <section class="sec hidden" id="sec-veiculos">
+      <div class="ph">
+        <h2 class="pt">🚙 Veículos</h2>
+        <button class="btn-primary btn-sm" onclick="abrirModalVeiculo()">+ Novo</button>
+      </div>
+      <div class="filters">
+        <input type="text" id="fVeicBusca" placeholder="🔍 Placa ou modelo..." oninput="filtrarVeiculos()"/>
+        <select id="fVeicSt" onchange="filtrarVeiculos()">
+          <option value="">Todos os status</option><option>Disponível</option><option>Em Uso</option><option>Manutenção</option>
+        </select>
+      </div>
+      <div id="veiculosList" class="list"></div>
+    </section>
+
+    <!-- === MOTORISTAS === -->
+    <section class="sec hidden" id="sec-motoristas">
+      <div class="ph">
+        <h2 class="pt">👨‍✈️ Motoristas</h2>
+        <button class="btn-primary btn-sm" onclick="abrirModalMotorista()">+ Novo</button>
+      </div>
+      <div class="filters">
+        <input type="text" id="fMotBusca" placeholder="🔍 Nome ou matrícula..." oninput="filtrarMotoristas()"/>
+        <select id="fMotSt" onchange="filtrarMotoristas()">
+          <option value="">Todos</option><option>Ativo</option><option>Inativo</option>
+        </select>
+      </div>
+      <div id="motoristasList" class="list"></div>
+    </section>
+
+    <!-- === RELATÓRIOS === -->
+    <section class="sec hidden" id="sec-relatorios">
+      <div class="ph"><h2 class="pt">📈 Relatórios</h2></div>
+      <div class="rel-grid">
+        <button class="rel-card" onclick="showRelFiltros('periodo')"><span class="rel-ico">📅</span><strong>Por Período</strong><span>Intervalo de datas</span></button>
+        <button class="rel-card" onclick="showRelFiltros('veiculo')"><span class="rel-ico">🚗</span><strong>Por Veículo</strong><span>Histórico do veículo</span></button>
+        <button class="rel-card" onclick="showRelFiltros('motorista')"><span class="rel-ico">👤</span><strong>Por Motorista</strong><span>Viagens por motorista</span></button>
+        <button class="rel-card" onclick="showRelFiltros('consumo')"><span class="rel-ico">⛽</span><strong>Combustível</strong><span>Análise de consumo</span></button>
+        <button class="rel-card" onclick="showRelFiltros('frota')"><span class="rel-ico">📊</span><strong>Frota Geral</strong><span>Visão da frota</span></button>
+        <button class="rel-card" onclick="showRelFiltros('km')"><span class="rel-ico">📏</span><strong>Quilometragem</strong><span>KM por veículo</span></button>
+      </div>
+      <div id="relFiltroBox" class="card hidden">
+        <div class="card-hd"><h3 id="relFiltroTit">Filtros</h3></div>
+        <div id="relFiltroBody" style="padding:16px;display:flex;flex-direction:column;gap:12px"></div>
+        <div style="padding:0 16px 16px;display:flex;gap:8px">
+          <button class="btn-primary btn-sm" onclick="gerarRelatorio()">Gerar Relatório</button>
+          <button class="btn-secondary btn-sm" onclick="document.getElementById('relFiltroBox').classList.add('hidden')">Cancelar</button>
+        </div>
+      </div>
+      <div id="relOutput" class="hidden"></div>
+    </section>
+
+    <!-- === CONFIGURAÇÕES === -->
+    <section class="sec hidden" id="sec-configuracoes">
+      <div class="ph"><h2 class="pt">⚙️ Configurações</h2></div>
+      <div class="card">
+        <div class="card-hd"><h3>🔗 Google Sheets</h3></div>
+        <div class="card-body">
+          <div class="field"><label>URL do Apps Script (Web App)</label>
+            <input type="url" id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec"/></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <button class="btn-primary btn-sm" onclick="salvarConfig()">💾 Salvar</button>
+            <button class="btn-secondary btn-sm" onclick="testarConexao()">🔌 Testar Conexão</button>
+          </div>
+          <div id="cfgMsg" class="hidden info-box" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="card perm-ad">
+        <div class="card-hd"><h3>👥 Usuários</h3><button class="btn-primary btn-sm" onclick="abrirModalUsuario()">+ Novo</button></div>
+        <div id="cfgUsuarios" class="card-body"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>ℹ️ Sobre o sistema</h3></div>
+        <div class="card-body">
+          <div class="about-row"><span>Versão</span><strong>1.0.0</strong></div>
+          <div class="about-row"><span>Plataforma</span><strong>PWA + Google Sheets</strong></div>
+          <div class="about-row"><span>Backend</span><strong>Google Apps Script</strong></div>
+          <div class="about-row"><span>Modo atual</span><strong id="cfgModo">Demo (offline)</strong></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="botnav">
+    <button class="bn active" data-s="dashboard" onclick="navigateTo('dashboard')">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bn" data-s="saida" onclick="navigateTo('saida')">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg>
+      <span>Saída</span>
+    </button>
+    <button class="bn" data-s="retorno" onclick="navigateTo('retorno')">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd"/></svg>
+      <span>Retorno</span>
+    </button>
+    <button class="bn" data-s="viagens" onclick="navigateTo('viagens')">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+      <span>Viagens</span>
+    </button>
+    <button class="bn" data-s="veiculos" onclick="navigateTo('veiculos')">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/></svg>
+      <span>Veículos</span>
+    </button>
+  </nav>
+</div>
+
+<!-- MODAIS -->
+<div id="mVeiculo" class="mo hidden"><div class="modal">
+  <div class="mhd"><h3 id="mVeiculoTit">Novo Veículo</h3><button class="mclose" onclick="fecharModal('mVeiculo')">✕</button></div>
+  <div class="mbd">
+    <input type="hidden" id="mvId"/>
+    <div class="row2"><div class="field"><label>Placa *</label><input type="text" id="mvPlaca" placeholder="ABC-1234" oninput="this.value=this.value.toUpperCase()"/></div><div class="field"><label>Ano *</label><input type="number" id="mvAno" placeholder="2024"/></div></div>
+    <div class="row2"><div class="field"><label>Marca *</label><input type="text" id="mvMarca" placeholder="Ex: Fiat"/></div><div class="field"><label>Modelo *</label><input type="text" id="mvModelo" placeholder="Ex: Strada"/></div></div>
+    <div class="row2">
+      <div class="field"><label>Tipo</label><select id="mvTipo"><option>Carro</option><option>Van</option><option>Caminhonete</option><option>Ônibus</option><option>Moto</option><option>Caminhão</option></select></div>
+      <div class="field"><label>Status</label><select id="mvStatus"><option>Disponível</option><option>Em Uso</option><option>Manutenção</option></select></div>
+    </div>
+    <div class="row2"><div class="field"><label>KM Atual</label><input type="number" id="mvKm" placeholder="0"/></div><div class="field"><label>Consumo km/l</label><input type="number" id="mvConsumo" placeholder="0" step="0.1"/></div></div>
+    <div class="field"><label>Secretaria / Setor</label><input type="text" id="mvSetor" placeholder="Ex: Secretaria de Saúde"/></div>
+  </div>
+  <div class="mft"><button class="btn-secondary" onclick="fecharModal('mVeiculo')">Cancelar</button><button class="btn-primary" onclick="salvarVeiculo()">Salvar</button></div>
+</div></div>
+
+<div id="mMotorista" class="mo hidden"><div class="modal">
+  <div class="mhd"><h3 id="mMotoristaTit">Novo Motorista</h3><button class="mclose" onclick="fecharModal('mMotorista')">✕</button></div>
+  <div class="mbd">
+    <input type="hidden" id="mmId"/>
+    <div class="field"><label>Nome Completo *</label><input type="text" id="mmNome" placeholder="Nome completo"/></div>
+    <div class="row2"><div class="field"><label>CPF</label><input type="text" id="mmCpf" placeholder="000.000.000-00"/></div><div class="field"><label>Telefone</label><input type="tel" id="mmTel" placeholder="(00) 00000-0000"/></div></div>
+    <div class="row2"><div class="field"><label>Nº CNH</label><input type="text" id="mmCnh" placeholder="Número da CNH"/></div><div class="field"><label>Categoria</label><select id="mmCat"><option>A</option><option>B</option><option selected>AB</option><option>C</option><option>D</option><option>E</option></select></div></div>
+    <div class="row2"><div class="field"><label>Vencimento CNH</label><input type="date" id="mmVenc"/></div><div class="field"><label>Matrícula</label><input type="text" id="mmMat" placeholder="Matrícula funcional"/></div></div>
+    <div class="field"><label>Status</label><select id="mmSt"><option>Ativo</option><option>Inativo</option><option>Afastado</option></select></div>
+  </div>
+  <div class="mft"><button class="btn-secondary" onclick="fecharModal('mMotorista')">Cancelar</button><button class="btn-primary" onclick="salvarMotorista()">Salvar</button></div>
+</div></div>
+
+<div id="mUsuario" class="mo hidden"><div class="modal">
+  <div class="mhd"><h3>Novo Usuário</h3><button class="mclose" onclick="fecharModal('mUsuario')">✕</button></div>
+  <div class="mbd">
+    <div class="field"><label>Nome Completo *</label><input type="text" id="muNome" placeholder="Nome do usuário"/></div>
+    <div class="row2"><div class="field"><label>Login *</label><input type="text" id="muLogin" placeholder="login"/></div><div class="field"><label>Senha *</label><input type="password" id="muSenha" placeholder="Senha"/></div></div>
+    <div class="field"><label>Perfil</label><select id="muPerfil"><option value="motorista">Motorista</option><option value="supervisor">Supervisor</option><option value="admin">Administrador</option></select></div>
+  </div>
+  <div class="mft"><button class="btn-secondary" onclick="fecharModal('mUsuario')">Cancelar</button><button class="btn-primary" onclick="salvarUsuario()">Criar usuário</button></div>
+</div></div>
+
+<div id="mViagem" class="mo hidden"><div class="modal">
+  <div class="mhd"><h3>Detalhes da Viagem</h3><button class="mclose" onclick="fecharModal('mViagem')">✕</button></div>
+  <div class="mbd" id="mViagemBody"></div>
+  <div class="mft"><button class="btn-secondary" onclick="fecharModal('mViagem')">Fechar</button></div>
+</div></div>
+
+<!-- UTILITÁRIOS -->
+<div id="toast" class="toast hidden"></div>
+<div id="loadingOv" class="loading-ov hidden">
+  <div class="loading-box"><div class="loader"></div><p id="loadingTxt">Carregando...</p></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
