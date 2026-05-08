@@ -8,11 +8,368 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="FrotaControl"/>
 <title>FrotaControl</title>
-<link rel="manifest" href="manifest.json"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css"/>
+<style>
+/* =============================================
+   FrotaControl - style.css
+   Sistema de Controle de Frota
+   ============================================= */
+
+/* ── RESET ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;background:#060C1A;color:#EDF2FF;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+input,select,textarea,button{font-family:inherit}
+
+/* ── TOKENS ─────────────────────────────────── */
+:root{
+  --bg:    #060C1A;
+  --bg2:   #0D1528;
+  --bg3:   #131F36;
+  --card:  #111C33;
+  --card2: #192540;
+  --b:     rgba(255,255,255,.07);
+  --b2:    rgba(255,255,255,.13);
+  --t:     #EDF2FF;
+  --t2:    #7E92B8;
+  --t3:    #435170;
+  --blue:  #4A8AFF;
+  --blue2: #2D6AE0;
+  --green: #22C55E;
+  --grn2:  #16A34A;
+  --org:   #F97316;
+  --org2:  #EA6E0D;
+  --purp:  #A855F7;
+  --red:   #EF4444;
+  --yel:   #EAB308;
+  --r:     14px;
+  --r2:    8px;
+  --sh:    0 4px 24px rgba(0,0,0,.5);
+  --sh2:   0 12px 48px rgba(0,0,0,.65);
+  --nh:    62px;  /* top nav height */
+  --bh:    68px;  /* bottom nav height */
+}
+
+/* ── UTILS ──────────────────────────────────── */
+.hidden{display:none!important}
+.screen{min-height:100dvh}
+
+/* ── SPLASH ─────────────────────────────────── */
+.splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.splash-content{display:flex;flex-direction:column;align-items:center;gap:16px;animation:fadeUp .6s ease both}
+.splash-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--blue),var(--purp));border-radius:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 48px rgba(74,138,255,.45)}
+.splash-icon svg{width:54px;height:54px}
+.splash-content h1{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.splash-content p{color:var(--t2);font-size:.9rem}
+.splash-bar-wrap{width:200px;height:3px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:8px}
+.splash-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purp));border-radius:99px;animation:loadbar 2.1s ease forwards}
+@keyframes loadbar{from{width:0}to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ── LOGIN ──────────────────────────────────── */
+.login-bg{position:fixed;inset:0;overflow:hidden;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.22}
+.b1{width:420px;height:420px;background:var(--blue);top:-120px;right:-80px}
+.b2{width:320px;height:320px;background:var(--purp);bottom:40px;left:-100px}
+.b3{width:220px;height:220px;background:var(--green);bottom:200px;right:60px}
+.login-container{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 48px;gap:36px}
+.login-head{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.login-logo{width:76px;height:76px;background:linear-gradient(135deg,var(--blue),var(--purp));border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 36px rgba(74,138,255,.5)}
+.login-logo svg{width:50px;height:50px}
+.login-head h1{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-head p{color:var(--t2);font-size:.9rem}
+.login-card{width:100%;max-width:430px;background:rgba(17,28,51,.85);backdrop-filter:blur(24px);border:1px solid var(--b2);border-radius:var(--r);padding:28px 22px;display:flex;flex-direction:column;gap:18px}
+.login-card h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.demo-box{border-top:1px solid var(--b);padding-top:14px}
+.demo-box p{color:var(--t3);font-size:.75rem;margin-bottom:8px}
+.demo-row{display:flex;flex-direction:column;gap:6px}
+.demo-row button{background:var(--bg3);border:1px solid var(--b2);border-radius:var(--r2);color:var(--t2);font-size:.8rem;padding:8px 12px;text-align:left;cursor:pointer;transition:background .15s}
+.demo-row button:hover{background:var(--card2)}
+.demo-row b{color:var(--blue);margin-right:6px}
+
+/* ── INPUTS ─────────────────────────────────── */
+.field{display:flex;flex-direction:column;gap:5px}
+label{font-size:.78rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
+.req{color:var(--red)}
+.input-ico{position:relative;display:flex;align-items:center}
+.input-ico svg{position:absolute;left:12px;width:16px;height:16px;color:var(--t3);pointer-events:none}
+.input-ico input{padding-left:38px!important}
+.eye-btn{position:absolute;right:10px;background:none;border:none;cursor:pointer;font-size:.95rem;opacity:.55;padding:4px}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=date],input[type=time],input[type=tel],input[type=url],select,textarea{width:100%;background:var(--bg3);border:1.5px solid var(--b);border-radius:var(--r2);color:var(--t);font-size:.93rem;padding:11px 13px;outline:none;transition:border-color .18s,box-shadow .18s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,138,255,.15)}
+input::placeholder,textarea::placeholder{color:var(--t3)}
+select option{background:var(--bg2);color:var(--t)}
+textarea{resize:vertical;min-height:72px}
+
+/* ── BUTTONS ─────────────────────────────────── */
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;border-radius:var(--r2);font-size:.92rem;font-weight:600;padding:12px 18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s,transform .1s}
+.btn-success{background:linear-gradient(135deg,var(--green),var(--grn2));color:#fff;border:none;border-radius:var(--r2);font-size:.92rem;font-weight:600;padding:12px 18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s,transform .1s}
+.btn-secondary{background:var(--card2);color:var(--t2);border:1.5px solid var(--b2);border-radius:var(--r2);font-size:.88rem;font-weight:500;padding:10px 16px;cursor:pointer;transition:background .15s}
+.btn-secondary:hover{background:var(--bg3)}
+.btn-primary:active,.btn-success:active{transform:scale(.97);opacity:.9}
+.w-full{width:100%}
+.btn-xl{padding:15px 18px;font-size:1rem;font-weight:700;letter-spacing:.2px}
+.btn-sm{padding:7px 13px;font-size:.8rem}
+.btn-gps{background:var(--card2);border:1.5px solid var(--b2);border-radius:var(--r2);color:var(--blue);font-size:.82rem;font-weight:600;padding:10px 13px;cursor:pointer;white-space:nowrap;transition:background .15s;display:flex;align-items:center;gap:4px}
+.btn-gps svg{width:14px;height:14px}
+.btn-gps:hover{background:rgba(74,138,255,.1)}
+.icoBtn{background:var(--card2);border:1.5px solid var(--b);border-radius:var(--r2);width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--t2);transition:background .15s}
+.icoBtn:hover{background:var(--bg3)}
+.spin-sm{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+/* ── ALERTS ──────────────────────────────────── */
+.alert-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--r2);color:var(--red);padding:10px 13px;font-size:.85rem}
+.info-box{background:rgba(74,138,255,.1);border:1px solid rgba(74,138,255,.25);border-radius:var(--r2);color:var(--blue);padding:10px 13px;font-size:.88rem;display:flex;align-items:center;gap:6px}
+.info-box strong{font-weight:700}
+
+/* ── APP LAYOUT ──────────────────────────────── */
+.app{display:flex;flex-direction:column;min-height:100dvh}
+
+/* Top Bar */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nh);background:rgba(6,12,26,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+.tb-l{display:flex;align-items:center;gap:10px}
+.tb-brand{display:flex;flex-direction:column}
+.tb-name{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;line-height:1}
+.tb-sec{font-size:.7rem;color:var(--t3)}
+.ham{width:34px;height:34px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px}
+.ham span{display:block;width:20px;height:2px;background:var(--t2);border-radius:99px}
+.tb-r{display:flex;align-items:center;gap:8px}
+.offline-dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ava-btn{background:none;border:none;cursor:pointer;padding:0}
+.ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purp));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;color:#fff}
+.ava.lg{width:44px;height:44px;font-size:1rem}
+
+/* User Dropdown */
+.udropdown{position:fixed;top:calc(var(--nh)+4px);right:12px;z-index:200;background:var(--card);border:1px solid var(--b2);border-radius:var(--r);box-shadow:var(--sh2);width:220px;overflow:hidden;animation:fadeDown .18s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.ud-top{display:flex;align-items:center;gap:10px;padding:14px}
+.ud-top strong{font-size:.88rem;display:block}
+.ud-div{height:1px;background:var(--b)}
+.ud-btn{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;cursor:pointer;color:var(--t2);font-size:.87rem;padding:12px 14px;text-align:left;transition:background .15s}
+.ud-btn:hover{background:var(--card2)}
+.ud-btn.red{color:var(--red)}
+.rpill{display:inline-block;background:rgba(74,138,255,.15);color:var(--blue);border-radius:99px;padding:2px 8px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* Sidebar */
+.sb-overlay{position:fixed;inset:0;z-index:290;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.sidebar{position:fixed;top:0;left:0;bottom:0;z-index:295;width:272px;background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;animation:slideIn .22s ease}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:none}}
+.sb-top{padding:22px 16px 14px;border-bottom:1px solid var(--b)}
+.sb-brand{display:flex;align-items:center;gap:10px}
+.sb-ico{font-size:1.7rem}
+.sb-bname{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem}
+.sb-bver{font-size:.7rem;color:var(--t3)}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.sb-grp-label{font-size:.68rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;padding:10px 8px 4px}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r2);background:none;border:none;cursor:pointer;color:var(--t2);font-size:.9rem;font-weight:500;text-align:left;width:100%;transition:background .15s,color .15s}
+.sb-link:hover,.sb-link.active{background:rgba(74,138,255,.12);color:var(--blue)}
+.sb-link.red{color:var(--red)}
+.sb-link.red:hover{background:rgba(239,68,68,.1)}
+.sb-foot{padding:10px;border-top:1px solid var(--b)}
+
+/* Content */
+.content{flex:1;padding:calc(var(--nh)+14px) 14px calc(var(--bh)+14px);max-width:640px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:0}
+
+/* Sections */
+.sec{display:none;flex-direction:column;gap:14px}
+.sec.active{display:flex}
+
+/* Page Header */
+.ph{display:flex;align-items:center;justify-content:space-between;padding-bottom:6px}
+.pt{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700}
+.ps{font-size:.78rem;color:var(--t3);margin-top:2px}
+
+/* Bottom Nav */
+.botnav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:var(--bh);background:rgba(6,12,26,.95);backdrop-filter:blur(18px);border-top:1px solid var(--b);display:flex;align-items:center;padding:0 2px;padding-bottom:env(safe-area-inset-bottom,0)}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:100%;background:none;border:none;cursor:pointer;color:var(--t3);font-size:.65rem;font-weight:500;padding:0 2px;transition:color .15s;min-width:0}
+.bn svg{width:22px;height:22px}
+.bn.active{color:var(--blue)}
+.bn span{white-space:nowrap}
+
+/* ── DASHBOARD ───────────────────────────────── */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.stat.green::after{background:var(--green)}
+.stat.orange::after{background:var(--org)}
+.stat.blue::after{background:var(--blue)}
+.stat.purple::after{background:var(--purp)}
+.stat-ic{font-size:1.5rem}
+.stat-v{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1}
+.stat-l{font-size:.72rem;color:var(--t2);margin-top:2px}
+
+/* ── CARDS ───────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden}
+.card-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b)}
+.card-hd h3{font-size:.9rem;font-weight:600}
+.card-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+.pill{border-radius:99px;padding:2px 10px;font-size:.75rem;font-weight:700}
+.pill.orange{background:rgba(249,115,22,.15);color:var(--org)}
+.pill.red{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* Trip items in dashboard */
+.trip-item{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--b);cursor:pointer;transition:background .15s}
+.trip-item:last-child{border-bottom:none}
+.trip-item:hover{background:var(--card2)}
+.trip-l{display:flex;flex-direction:column;gap:2px}
+.trip-plate{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem}
+.trip-sub{font-size:.76rem;color:var(--t2)}
+.trip-r{text-align:right}
+.trip-time{font-size:.75rem;color:var(--t2)}
+
+/* Alert items */
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b)}
+.alert-item:last-child{border-bottom:none}
+.ai-ico{font-size:1rem;flex-shrink:0;margin-top:1px}
+.ai-title{font-size:.85rem;font-weight:500}
+.ai-sub{font-size:.75rem;color:var(--t2)}
+
+/* Empty state */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 14px;gap:8px}
+.empty span{font-size:2rem;opacity:.35}
+.empty p{color:var(--t3);font-size:.85rem}
+
+/* ── FORMS ───────────────────────────────────── */
+.form-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gps-row{display:flex;gap:8px}
+.gps-row input{flex:1}
+.prev-card{background:var(--bg3);border:1px solid var(--b2);border-radius:var(--r2);padding:11px 13px;display:flex;flex-direction:column;gap:5px}
+.prow{display:flex;gap:8px;font-size:.84rem;align-items:baseline}
+.pk{color:var(--t2);font-weight:500;min-width:72px;flex-shrink:0}
+.bst{display:inline-block;padding:1px 8px;border-radius:99px;font-size:.75rem;font-weight:600}
+
+/* ── STATUS BADGES ───────────────────────────── */
+.st-disp,.st-Disponível{background:rgba(34,197,94,.15);color:var(--green)}
+.st-emuso,.st-Em-Uso{background:rgba(249,115,22,.15);color:var(--org)}
+.st-manut,.st-Manutenção{background:rgba(234,179,8,.15);color:var(--yel)}
+.st-andamento{background:rgba(249,115,22,.15);color:var(--org)}
+.st-concluida{background:rgba(34,197,94,.15);color:var(--green)}
+.st-ativo,.st-Ativo{background:rgba(34,197,94,.15);color:var(--green)}
+.st-inativo,.st-Inativo{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* ── FILTERS ─────────────────────────────────── */
+.filters{display:flex;flex-direction:column;gap:8px}
+.filters>input[type=text]{width:100%}
+.filters-row{display:flex;gap:8px;flex-wrap:wrap}
+.filters-row>*{flex:1;min-width:100px}
+
+/* ── LISTS ───────────────────────────────────── */
+.list{display:flex;flex-direction:column;gap:10px}
+.loading{text-align:center;padding:40px 14px;color:var(--t3);font-size:.88rem}
+
+/* Viagem card */
+.vcard{background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.vcard:hover{border-color:var(--b2)}
+.vcard-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:1px solid var(--b)}
+.vcard-plate{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem}
+.vcard-body{display:grid;grid-template-columns:1fr 1fr;padding:10px 13px;gap:8px}
+.vi-item{display:flex;flex-direction:column;gap:1px}
+.vi-lbl{font-size:.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.vi-val{font-size:.85rem;font-weight:500}
+
+/* Veículo card */
+.veic-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.veic-card:hover{border-color:var(--b2)}
+.veic-ico{width:44px;height:44px;background:var(--bg3);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.veic-info{flex:1;min-width:0}
+.veic-placa{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem}
+.veic-modelo{font-size:.8rem;color:var(--t2)}
+.veic-setor{font-size:.73rem;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.veic-km{font-size:.76rem;color:var(--t2);margin-top:2px}
+
+/* Motorista card */
+.mot-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.mot-card:hover{border-color:var(--b2)}
+.mot-ava{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purp));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#fff;flex-shrink:0}
+.mot-info{flex:1}
+.mot-nome{font-weight:600;font-size:.9rem}
+.mot-sub{font-size:.76rem;color:var(--t2)}
+.mot-cnh{font-size:.74rem}
+
+/* ── RELATÓRIOS ──────────────────────────────── */
+.rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rel-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;cursor:pointer;transition:background .15s,border-color .15s}
+.rel-card:hover{background:var(--card2);border-color:var(--b2)}
+.rel-ico{font-size:1.9rem}
+.rel-card strong{font-size:.85rem;font-weight:600}
+.rel-card span{font-size:.73rem;color:var(--t3)}
+.rel-output-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b)}
+.rel-table-wrap{overflow-x:auto}
+.rel-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.rel-table th{padding:9px 11px;text-align:left;background:var(--bg3);color:var(--t2);font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--b);white-space:nowrap}
+.rel-table td{padding:9px 11px;border-bottom:1px solid var(--b)}
+.rel-table tr:last-child td{border-bottom:none}
+.rel-table tr:hover td{background:var(--card2)}
+
+/* ── CONFIGURAÇÕES ───────────────────────────── */
+.about-row{display:flex;justify-content:space-between;font-size:.87rem;padding:6px 0;border-bottom:1px solid var(--b)}
+.about-row:last-child{border-bottom:none}
+.about-row span{color:var(--t2)}
+.mini-user{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg3);border-radius:var(--r2);font-size:.84rem}
+
+/* ── MODAIS ──────────────────────────────────── */
+.mo{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0}
+.modal{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:640px;max-height:92dvh;display:flex;flex-direction:column;animation:slideUp .22s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.mhd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--b);flex-shrink:0}
+.mhd h3{font-size:.98rem;font-weight:700}
+.mclose{width:30px;height:30px;border-radius:50%;background:var(--card2);border:none;cursor:pointer;color:var(--t2);font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.mbd{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:13px}
+.mft{display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--b);flex-shrink:0}
+
+/* Detalhe viagem */
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.det-item{display:flex;flex-direction:column;gap:3px}
+.det-item.full{grid-column:1/-1}
+.det-lbl{font-size:.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.det-val{font-size:.88rem;font-weight:500}
+.det-sep{grid-column:1/-1;border:none;border-top:1px solid var(--b)}
+.tag-km{display:inline-flex;align-items:center;gap:5px;background:rgba(74,138,255,.1);color:var(--blue);border-radius:99px;padding:4px 11px;font-size:.82rem;font-weight:600}
+.tag-t{display:inline-flex;align-items:center;gap:5px;background:rgba(168,85,247,.1);color:var(--purp);border-radius:99px;padding:4px 11px;font-size:.82rem;font-weight:600}
+
+/* ── TOAST ───────────────────────────────────── */
+.toast{position:fixed;bottom:calc(var(--bh)+10px);left:50%;transform:translateX(-50%);background:var(--card2);color:var(--t);border:1px solid var(--b2);border-radius:99px;padding:9px 20px;font-size:.87rem;font-weight:500;white-space:nowrap;z-index:9000;box-shadow:var(--sh2);max-width:90vw;overflow:hidden;text-overflow:ellipsis;animation:toastIn .25s ease}
+.toast.ok{border-color:var(--green);color:var(--green)}
+.toast.err{border-color:var(--red);color:var(--red)}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translateX(-50%)}}
+
+/* ── LOADING ─────────────────────────────────── */
+.loading-ov{position:fixed;inset:0;z-index:8000;background:rgba(6,12,26,.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+.loading-box{display:flex;flex-direction:column;align-items:center;gap:14px}
+.loader{width:42px;height:42px;border:3px solid var(--b2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-box p{font-size:.88rem;color:var(--t2)}
+
+/* ── PERMISSIONS ─────────────────────────────── */
+.perm-ad,.perm-sv{display:none}
+
+/* ── SCROLLBAR ───────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:99px}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(min-width:480px){
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .rel-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:640px){
+  .content{padding-left:20px;padding-right:20px}
+  .mo{align-items:center;padding:20px}
+  .modal{border-radius:var(--r);max-height:82dvh}
+}
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .botnav{padding-bottom:calc(env(safe-area-inset-bottom) + 0px);height:calc(var(--bh) + env(safe-area-inset-bottom))}
+  .content{padding-bottom:calc(var(--bh) + env(safe-area-inset-bottom) + 14px)}
+}
+
+</style>
+<!-- github pages -->
 </head>
 <body>
 
@@ -406,6 +763,1073 @@
   <div class="loading-box"><div class="loader"></div><p id="loadingTxt">Carregando...</p></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+'use strict';
+/* =============================================
+   FrotaControl - script.js
+   Lógica completa do aplicativo
+   ============================================= */
+
+// ── CONFIG ───────────────────────────────────
+const CFG = {
+  SCRIPT_URL: localStorage.getItem('fc_url') || '',
+  VER: '1.0.0',
+  OFFLINE_Q: 'fc_offline',
+};
+
+// ── ESTADO GLOBAL ────────────────────────────
+const S = {
+  user: null,
+  veiculos: [],
+  motoristas: [],
+  viagens: [],
+  usuarios: [],
+  relTipo: '',
+  offlineQ: JSON.parse(localStorage.getItem(CFG.OFFLINE_Q) || '[]'),
+};
+
+// ── USUÁRIOS DEMO ────────────────────────────
+const DEMO_USERS = [
+  { id:'U0', nome:'Administrador',   usuario:'admin',      senha:btoa('admin123'),    perfil:'admin'      },
+  { id:'U1', nome:'João Motorista',  usuario:'motorista',  senha:btoa('motor123'),    perfil:'motorista'  },
+  { id:'U2', nome:'Maria Supervisora', usuario:'supervisor', senha:btoa('super123'),  perfil:'supervisor' },
+];
+
+// ── DADOS DEMO ───────────────────────────────
+const DEMO_VEICULOS = [
+  { id:'V1', placa:'ABC-1234', marca:'Fiat',       modelo:'Strada',   ano:'2022', tipo:'Caminhonete', setor:'Sec. de Obras',      status:'Disponível', km:'45230', consumo:'11.5' },
+  { id:'V2', placa:'DEF-5678', marca:'Ford',       modelo:'Transit',  ano:'2021', tipo:'Van',         setor:'Sec. de Saúde',      status:'Em Uso',     km:'78450', consumo:'9.0'  },
+  { id:'V3', placa:'GHI-9012', marca:'Volkswagen', modelo:'Gol',      ano:'2020', tipo:'Carro',       setor:'Sec. de Educação',   status:'Disponível', km:'32100', consumo:'13.0' },
+  { id:'V4', placa:'JKL-3456', marca:'Chevrolet',  modelo:'S10',      ano:'2023', tipo:'Caminhonete', setor:'Sec. de Agricultura',status:'Manutenção', km:'91000', consumo:'10.5' },
+  { id:'V5', placa:'MNO-7890', marca:'Toyota',     modelo:'Hilux',    ano:'2022', tipo:'Caminhonete', setor:'Sec. de Infraestrutura', status:'Disponível', km:'12340', consumo:'10.0' },
+];
+const DEMO_MOTORISTAS = [
+  { id:'M1', nome:'João da Silva',    cpf:'123.456.789-00', telefone:'(62) 99999-1111', cnh:'12345678', categoria:'B',  vencCnh:'2026-12-31', matricula:'0001', status:'Ativo'  },
+  { id:'M2', nome:'Maria Souza',      cpf:'987.654.321-00', telefone:'(62) 98888-2222', cnh:'87654321', categoria:'D',  vencCnh:'2025-05-20', matricula:'0002', status:'Ativo'  },
+  { id:'M3', nome:'Carlos Oliveira',  cpf:'456.123.789-00', telefone:'(62) 97777-3333', cnh:'45678912', categoria:'C',  vencCnh:'2024-03-15', matricula:'0003', status:'Ativo'  },
+  { id:'M4', nome:'Ana Costa',        cpf:'321.654.987-00', telefone:'(62) 96666-4444', cnh:'32165498', categoria:'B',  vencCnh:'2027-08-10', matricula:'0004', status:'Ativo'  },
+];
+const DEMO_VIAGENS = [
+  {
+    id:'T1', veiculoId:'V2', placa:'DEF-5678', motorista:'João da Silva', motoristaId:'M1',
+    destino:'Hospital Municipal', motivo:'Transporte de pacientes',
+    kmInicial:'78250', kmFinal:'', kmRodados:'',
+    dataHoraSaida: new Date(Date.now()-3600000).toISOString(),
+    dataHoraRetorno:'', tempoViagem:'',
+    status:'em andamento',
+    combustivelSaida:'3/4', combustivelRetorno:'',
+    passageiros:'4', nomePassageiros:'Pedro, Ana, Carlos, Lúcia',
+    geoSaida:'-16.6799,-49.2650', geoRetorno:'', ocorrencias:'', obs:'',
+    usuarioRegistro:'admin',
+  },
+  {
+    id:'T2', veiculoId:'V1', placa:'ABC-1234', motorista:'Maria Souza', motoristaId:'M2',
+    destino:'Secretaria Estadual de Saúde', motivo:'Reunião administrativa',
+    kmInicial:'45000', kmFinal:'45230', kmRodados:'230',
+    dataHoraSaida: new Date(Date.now()-86400000).toISOString(),
+    dataHoraRetorno: new Date(Date.now()-86400000+7200000).toISOString(),
+    tempoViagem:'2.0h',
+    status:'concluída',
+    combustivelSaida:'Cheio', combustivelRetorno:'3/4',
+    passageiros:'2', nomePassageiros:'José, Rita',
+    geoSaida:'-16.6799,-49.2650', geoRetorno:'-16.6800,-49.2652',
+    ocorrencias:'Trânsito intenso na GO-070', obs:'',
+    usuarioRegistro:'admin',
+  },
+  {
+    id:'T3', veiculoId:'V3', placa:'GHI-9012', motorista:'Carlos Oliveira', motoristaId:'M3',
+    destino:'Escola Estadual João XXIII', motivo:'Transporte de material escolar',
+    kmInicial:'31800', kmFinal:'32100', kmRodados:'300',
+    dataHoraSaida: new Date(Date.now()-172800000).toISOString(),
+    dataHoraRetorno: new Date(Date.now()-172800000+10800000).toISOString(),
+    tempoViagem:'3.0h',
+    status:'concluída',
+    combustivelSaida:'1/2', combustivelRetorno:'1/4',
+    passageiros:'1', nomePassageiros:'Marcos',
+    geoSaida:'', geoRetorno:'', ocorrencias:'', obs:'Entrega realizada com sucesso',
+    usuarioRegistro:'motorista',
+  },
+];
+
+// ══════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hidden');
+    const saved = localStorage.getItem('fc_session');
+    if (saved) {
+      try { S.user = JSON.parse(saved); startApp(); }
+      catch { showLogin(); }
+    } else {
+      showLogin();
+    }
+  }, 2200);
+});
+
+function showLogin() {
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+}
+
+function startApp() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+
+  // Preenche UI com dados do usuário
+  const ini = S.user.nome.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase();
+  ['avaTop','avaDropdown'].forEach(id => document.getElementById(id).textContent = ini);
+  document.getElementById('udName').textContent = S.user.nome;
+  document.getElementById('udRole').textContent = cap(S.user.perfil);
+
+  applyPerms();
+  loadData().then(() => {
+    navigateTo('dashboard');
+    syncOffline();
+  });
+  setupPWA();
+}
+
+function applyPerms() {
+  const p = S.user.perfil;
+  // Elementos .perm-ad só para admin
+  document.querySelectorAll('.perm-ad').forEach(el => {
+    el.style.display = p === 'admin' ? '' : 'none';
+  });
+  // Elementos .perm-sv para supervisor ou admin
+  document.querySelectorAll('.perm-sv').forEach(el => {
+    el.style.display = (p === 'admin' || p === 'supervisor') ? '' : 'none';
+  });
+}
+
+// ══════════════════════════════════════════════
+// LOGIN / LOGOUT
+// ══════════════════════════════════════════════
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  const btn = document.getElementById('loginBtn');
+
+  if (!u || !p) { showErr(err, 'Preencha usuário e senha.'); return; }
+
+  document.getElementById('loginTxt').classList.add('hidden');
+  document.getElementById('loginLoad').classList.remove('hidden');
+  btn.disabled = true;
+
+  if (CFG.SCRIPT_URL) {
+    apiCall('login', { usuario:u, senha:btoa(p) })
+      .then(d => { if (d.success) loginOk(d.user); else loginLocal(u,p,err,btn); })
+      .catch(() => loginLocal(u,p,err,btn));
+  } else {
+    setTimeout(() => loginLocal(u,p,err,btn), 600);
+  }
+}
+
+function loginLocal(u, p, err, btn) {
+  const lista = [...DEMO_USERS, ...S.usuarios];
+  const found = lista.find(x => x.usuario===u && x.senha===btoa(p));
+  document.getElementById('loginTxt').classList.remove('hidden');
+  document.getElementById('loginLoad').classList.add('hidden');
+  btn.disabled = false;
+  if (found) loginOk(found);
+  else showErr(err, '❌ Usuário ou senha incorretos.');
+}
+
+function loginOk(userObj) {
+  S.user = userObj;
+  localStorage.setItem('fc_session', JSON.stringify(userObj));
+  document.getElementById('loginErr').classList.add('hidden');
+  startApp();
+}
+
+function doLogout() {
+  S.user = null;
+  localStorage.removeItem('fc_session');
+  closeSidebar();
+  closeUserMenu();
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').classList.add('hidden');
+}
+
+function fillDemo(u, p) {
+  document.getElementById('loginUser').value = u;
+  document.getElementById('loginPass').value = p;
+}
+
+function togglePass() {
+  const i = document.getElementById('loginPass');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+// ══════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════
+async function apiCall(action, data={}) {
+  if (!CFG.SCRIPT_URL) throw new Error('URL não configurada');
+  const resp = await fetch(CFG.SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action, ...data }),
+    redirect: 'follow',
+  });
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  return resp.json();
+}
+
+async function loadData() {
+  if (!CFG.SCRIPT_URL) {
+    S.veiculos   = JSON.parse(JSON.stringify(DEMO_VEICULOS));
+    S.motoristas = JSON.parse(JSON.stringify(DEMO_MOTORISTAS));
+    S.viagens    = JSON.parse(JSON.stringify(DEMO_VIAGENS));
+    S.usuarios   = JSON.parse(localStorage.getItem('fc_users') || '[]');
+    return;
+  }
+  showLoading('Carregando dados...');
+  try {
+    const [v,m,vg] = await Promise.all([apiCall('getVeiculos'),apiCall('getMotoristas'),apiCall('getViagens')]);
+    S.veiculos   = v.data  || [];
+    S.motoristas = m.data  || [];
+    S.viagens    = vg.data || [];
+    document.getElementById('cfgModo').textContent = 'Conectado ao Google Sheets';
+  } catch(e) {
+    S.veiculos   = JSON.parse(JSON.stringify(DEMO_VEICULOS));
+    S.motoristas = JSON.parse(JSON.stringify(DEMO_MOTORISTAS));
+    S.viagens    = JSON.parse(JSON.stringify(DEMO_VIAGENS));
+    S.usuarios   = JSON.parse(localStorage.getItem('fc_users') || '[]');
+    showToast('📵 Modo demo — dados locais', 'err');
+  } finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════════════
+const SEC_LABELS = {
+  dashboard:'Dashboard', saida:'Registrar Saída', retorno:'Registrar Retorno',
+  viagens:'Histórico', veiculos:'Veículos', motoristas:'Motoristas',
+  relatorios:'Relatórios', configuracoes:'Configurações',
+};
+const SEC_LOADERS = {
+  dashboard: loadDashboard,
+  saida:     loadFormSaida,
+  retorno:   loadFormRetorno,
+  viagens:   loadViagens,
+  veiculos:  loadVeiculos,
+  motoristas:loadMotoristas,
+  configuracoes: loadConfig,
+};
+
+function navigateTo(s) {
+  document.querySelectorAll('.sec').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('sec-'+s);
+  if (el) el.classList.add('active');
+
+  document.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', b.dataset.s===s));
+  document.querySelectorAll('.sb-link').forEach(b => b.classList.toggle('active', b.dataset.s===s));
+  document.getElementById('tbSec').textContent = SEC_LABELS[s] || s;
+
+  closeSidebar();
+  closeUserMenu();
+  if (SEC_LOADERS[s]) SEC_LOADERS[s]();
+}
+
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+function loadDashboard() {
+  const hoje = new Date().toDateString();
+  document.getElementById('dashDate').textContent = new Date().toLocaleDateString('pt-BR', {weekday:'long',day:'2-digit',month:'long'});
+
+  const disp   = S.veiculos.filter(v=>v.status==='Disponível').length;
+  const emUso  = S.veiculos.filter(v=>v.status==='Em Uso').length;
+  const vHoje  = S.viagens.filter(v=>new Date(v.dataHoraSaida).toDateString()===hoje);
+  const kmHoje = vHoje.filter(v=>v.kmFinal&&v.kmInicial)
+                      .reduce((a,v)=>a+(parseFloat(v.kmFinal)-parseFloat(v.kmInicial)),0);
+
+  document.getElementById('stDisp').textContent  = disp;
+  document.getElementById('stEmUso').textContent  = emUso;
+  document.getElementById('stKm').textContent     = kmHoje>0 ? kmHoje.toFixed(0) : '0';
+  document.getElementById('stVg').textContent     = vHoje.length;
+  document.getElementById('pillAtivas').textContent = emUso;
+
+  // Ativas
+  const ativas = S.viagens.filter(v=>v.status==='em andamento');
+  const da = document.getElementById('dashAtivas');
+  if (!ativas.length) {
+    da.innerHTML = '<div class="empty"><span>🚗</span><p>Nenhum veículo em uso agora</p></div>';
+  } else {
+    da.innerHTML = ativas.map(v=>`
+      <div class="trip-item" onclick="verViagem('${v.id}')">
+        <div class="trip-l">
+          <span class="trip-plate">${v.placa||'--'}</span>
+          <span class="trip-sub">${v.motorista} → ${v.destino}</span>
+        </div>
+        <div class="trip-r">
+          <div class="trip-time">${fmtTime(v.dataHoraSaida)}</div>
+          <span class="bst st-andamento">🔴 Em viagem</span>
+        </div>
+      </div>`).join('');
+  }
+
+  // Alertas
+  const alerts = [];
+  S.motoristas.forEach(m => {
+    if (!m.vencCnh) return;
+    const d = (new Date(m.vencCnh)-new Date())/(864e5);
+    if (d<0)   alerts.push({ic:'🔴',t:`CNH VENCIDA`,s:`${m.nome}`});
+    else if(d<60) alerts.push({ic:'⚠️',t:`CNH vence em ${Math.ceil(d)} dias`,s:`${m.nome}`});
+  });
+  S.veiculos.forEach(v => {
+    if (parseFloat(v.km)>100000) alerts.push({ic:'🔧',t:`Revisão necessária`,s:`${v.placa} — ${fmtNum(v.km)} km`});
+  });
+  if (S.offlineQ.length>0) alerts.push({ic:'📵',t:`${S.offlineQ.length} registro(s) aguardando sincronização`,s:'Aguardando conexão'});
+
+  const al = document.getElementById('dashAlertas');
+  if (!alerts.length) {
+    al.innerHTML = '<div class="empty"><span>✅</span><p>Sem alertas no momento</p></div>';
+    document.getElementById('pillAlertas').classList.add('hidden');
+  } else {
+    document.getElementById('pillAlertas').textContent = alerts.length;
+    document.getElementById('pillAlertas').classList.remove('hidden');
+    al.innerHTML = alerts.map(a=>`
+      <div class="alert-item">
+        <span class="ai-ico">${a.ic}</span>
+        <div><div class="ai-title">${a.t}</div><div class="ai-sub">${a.s}</div></div>
+      </div>`).join('');
+  }
+}
+
+function refreshAll() {
+  loadData().then(loadDashboard);
+}
+
+// ══════════════════════════════════════════════
+// SAÍDA
+// ══════════════════════════════════════════════
+function loadFormSaida() {
+  const sv = document.getElementById('sVeiculo');
+  const disp = S.veiculos.filter(v=>v.status==='Disponível');
+  sv.innerHTML = '<option value="">— Selecione o veículo —</option>' +
+    disp.map(v=>`<option value="${v.id}">${v.placa} — ${v.marca} ${v.modelo}</option>`).join('');
+
+  const sm = document.getElementById('sMotorista');
+  sm.innerHTML = '<option value="">— Selecione o motorista —</option>' +
+    S.motoristas.filter(m=>m.status==='Ativo')
+      .map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
+
+  const now = new Date();
+  document.getElementById('sData').value = toDateIn(now);
+  document.getElementById('sHora').value = toTimeIn(now);
+  document.getElementById('veicPrev').classList.add('hidden');
+  document.getElementById('saidaErr').classList.add('hidden');
+
+  // Pré-seleciona motorista se for o próprio
+  if (S.user.perfil==='motorista') {
+    const nm = S.motoristas.find(m=>m.nome.toLowerCase().includes(S.user.nome.split(' ')[0].toLowerCase()));
+    if (nm) sm.value = nm.id;
+  }
+}
+
+function onVeiculoSel() {
+  const id = document.getElementById('sVeiculo').value;
+  const p  = document.getElementById('veicPrev');
+  if (!id) { p.classList.add('hidden'); return; }
+  const v = S.veiculos.find(x=>x.id===id);
+  if (!v) return;
+  document.getElementById('pvModelo').textContent = `${v.marca} ${v.modelo} ${v.ano}`;
+  document.getElementById('pvKm').textContent = fmtNum(v.km) + ' km';
+  document.getElementById('pvSetor').textContent = v.setor || '--';
+  const st = document.getElementById('pvStatus');
+  st.textContent = v.status;
+  st.className = `bst st-${v.status.replace(' ','-')}`;
+  document.getElementById('sKmIni').value = v.km;
+  p.classList.remove('hidden');
+}
+
+async function registrarSaida() {
+  const vId  = document.getElementById('sVeiculo').value;
+  const mId  = document.getElementById('sMotorista').value;
+  const kmI  = document.getElementById('sKmIni').value;
+  const dest = document.getElementById('sDestino').value.trim();
+  const mot  = document.getElementById('sMotivo').value.trim();
+  const data = document.getElementById('sData').value;
+  const hora = document.getElementById('sHora').value;
+  const err  = document.getElementById('saidaErr');
+
+  if (!vId||!mId||!kmI||!dest||!mot||!data||!hora) {
+    showErr(err,'Preencha todos os campos obrigatórios (*).'); return;
+  }
+  const veiculo   = S.veiculos.find(v=>v.id===vId);
+  const motorista = S.motoristas.find(m=>m.id===mId);
+  if (!veiculo||!motorista) { showErr(err,'Veículo ou motorista inválido.'); return; }
+  if (parseFloat(kmI) < parseFloat(veiculo.km)) {
+    showErr(err,`KM inicial (${kmI}) menor que o KM atual do veículo (${veiculo.km}).`); return;
+  }
+
+  err.classList.add('hidden');
+
+  const viagem = {
+    id: 'T'+Date.now(),
+    veiculoId:vId, placa:veiculo.placa,
+    motorista:motorista.nome, motoristaId:mId,
+    destino:dest, motivo:mot,
+    kmInicial:kmI, kmFinal:'', kmRodados:'',
+    dataHoraSaida:`${data}T${hora}:00`,
+    dataHoraRetorno:'', tempoViagem:'',
+    status:'em andamento',
+    combustivelSaida: document.getElementById('sComb').value,
+    combustivelRetorno:'',
+    passageiros: document.getElementById('sPassNum').value||'0',
+    nomePassageiros: document.getElementById('sPassNomes').value,
+    geoSaida: document.getElementById('sGeo').value,
+    geoRetorno:'', ocorrencias:'',
+    obs: document.getElementById('sObs').value,
+    usuarioRegistro: S.user.nome,
+  };
+
+  showLoading('Registrando saída...');
+  try {
+    if (CFG.SCRIPT_URL) await apiCall('registrarSaida',{viagem});
+    else { S.viagens.unshift(viagem); veiculo.status='Em Uso'; veiculo.km=kmI; addOffline({action:'registrarSaida',viagem}); }
+    hideLoading();
+    showToast('✅ Saída registrada com sucesso!','ok');
+    // Reset
+    ['sVeiculo','sMotorista','sKmIni','sDestino','sMotivo','sPassNum','sPassNomes','sGeo','sObs'].forEach(id=>{document.getElementById(id).value='';});
+    document.getElementById('veicPrev').classList.add('hidden');
+    navigateTo('dashboard');
+  } catch(e) { hideLoading(); showErr(err,'Erro: '+e.message); }
+}
+
+// ══════════════════════════════════════════════
+// RETORNO
+// ══════════════════════════════════════════════
+function loadFormRetorno() {
+  const sel = document.getElementById('rViagem');
+  const ativas = S.viagens.filter(v=>v.status==='em andamento');
+  sel.innerHTML = '<option value="">— Selecione a viagem —</option>' +
+    ativas.map(v=>`<option value="${v.id}">${v.placa} — ${v.motorista} → ${v.destino}</option>`).join('');
+
+  const now = new Date();
+  document.getElementById('rData').value = toDateIn(now);
+  document.getElementById('rHora').value = toTimeIn(now);
+  document.getElementById('viagemPrev').classList.add('hidden');
+  document.getElementById('kmBox').classList.add('hidden');
+  document.getElementById('retornoErr').classList.add('hidden');
+}
+
+function onViagemSel() {
+  const id = document.getElementById('rViagem').value;
+  const p  = document.getElementById('viagemPrev');
+  if (!id) { p.classList.add('hidden'); return; }
+  const v = S.viagens.find(x=>x.id===id);
+  if (!v) return;
+  document.getElementById('rvPlaca').textContent    = v.placa||'--';
+  document.getElementById('rvMot').textContent      = v.motorista;
+  document.getElementById('rvDest').textContent     = v.destino;
+  document.getElementById('rvKmS').textContent      = fmtNum(v.kmInicial)+' km';
+  document.getElementById('rvHora').textContent     = fmtDT(v.dataHoraSaida);
+  p.classList.remove('hidden');
+  document.getElementById('rKmFinal').value = '';
+  document.getElementById('kmBox').classList.add('hidden');
+}
+
+function calcKm() {
+  const id     = document.getElementById('rViagem').value;
+  const kmFin  = parseFloat(document.getElementById('rKmFinal').value);
+  if (!id||isNaN(kmFin)) return;
+  const v = S.viagens.find(x=>x.id===id);
+  if (!v) return;
+  const rod = kmFin - parseFloat(v.kmInicial);
+  if (rod>=0) {
+    document.getElementById('kmVal').textContent = fmtNum(rod.toFixed(0))+' km';
+    document.getElementById('kmBox').classList.remove('hidden');
+  }
+}
+
+async function registrarRetorno() {
+  const vId    = document.getElementById('rViagem').value;
+  const kmFin  = document.getElementById('rKmFinal').value;
+  const data   = document.getElementById('rData').value;
+  const hora   = document.getElementById('rHora').value;
+  const err    = document.getElementById('retornoErr');
+
+  if (!vId||!kmFin||!data||!hora) { showErr(err,'Preencha todos os campos obrigatórios (*).'); return; }
+  const viagem = S.viagens.find(v=>v.id===vId);
+  if (!viagem) { showErr(err,'Viagem não encontrada.'); return; }
+  if (parseFloat(kmFin) < parseFloat(viagem.kmInicial)) {
+    showErr(err,`KM final (${kmFin}) não pode ser menor que KM inicial (${viagem.kmInicial}).`); return;
+  }
+
+  err.classList.add('hidden');
+  const rod      = parseFloat(kmFin)-parseFloat(viagem.kmInicial);
+  const dtRet    = `${data}T${hora}:00`;
+  const tempoH   = ((new Date(dtRet)-new Date(viagem.dataHoraSaida))/3600000).toFixed(1);
+
+  const retorno = {
+    viagemId: vId, kmFinal: kmFin,
+    kmRodados: rod.toFixed(0), dataHoraRetorno: dtRet,
+    tempoViagem: tempoH+'h',
+    combustivelRetorno: document.getElementById('rComb').value,
+    geoRetorno: document.getElementById('rGeo').value,
+    ocorrencias: document.getElementById('rOcorr').value,
+  };
+
+  showLoading('Registrando retorno...');
+  try {
+    if (CFG.SCRIPT_URL) await apiCall('registrarRetorno',{retorno});
+    else {
+      const idx = S.viagens.findIndex(v=>v.id===vId);
+      if (idx!==-1) S.viagens[idx] = {...S.viagens[idx],...retorno,status:'concluída'};
+      const vc = S.veiculos.find(v=>v.id===viagem.veiculoId);
+      if (vc) { vc.status='Disponível'; vc.km=kmFin; }
+      addOffline({action:'registrarRetorno',retorno});
+    }
+    hideLoading();
+    showToast(`✅ Retorno registrado! ${fmtNum(rod.toFixed(0))} km rodados.`,'ok');
+    navigateTo('dashboard');
+  } catch(e) { hideLoading(); showErr(err,'Erro: '+e.message); }
+}
+
+// ══════════════════════════════════════════════
+// VIAGENS
+// ══════════════════════════════════════════════
+function loadViagens() {
+  renderViagens([...S.viagens].sort((a,b)=>new Date(b.dataHoraSaida)-new Date(a.dataHoraSaida)));
+}
+
+function filtrarViagens() {
+  const q  = document.getElementById('fVBusca').value.toLowerCase();
+  const de = document.getElementById('fVDe').value;
+  const at = document.getElementById('fVAte').value;
+  const st = document.getElementById('fVSt').value;
+
+  const f = S.viagens.filter(v=>{
+    const ok1 = !q || [v.placa,v.motorista,v.destino].some(x=>(x||'').toLowerCase().includes(q));
+    const dt  = new Date(v.dataHoraSaida);
+    const ok2 = !de || dt >= new Date(de);
+    const ok3 = !at || dt <= new Date(at+'T23:59:59');
+    const ok4 = !st || v.status===st;
+    return ok1&&ok2&&ok3&&ok4;
+  }).sort((a,b)=>new Date(b.dataHoraSaida)-new Date(a.dataHoraSaida));
+
+  renderViagens(f);
+}
+
+function renderViagens(list) {
+  const c = document.getElementById('viagensList');
+  if (!list.length) { c.innerHTML='<div class="empty"><span>📋</span><p>Nenhuma viagem encontrada</p></div>'; return; }
+  c.innerHTML = list.map(v=>{
+    const km = v.kmFinal ? fmtNum((parseFloat(v.kmFinal)-parseFloat(v.kmInicial)).toFixed(0)) : '--';
+    return `
+    <div class="vcard" onclick="verViagem('${v.id}')">
+      <div class="vcard-hd">
+        <span class="vcard-plate">${v.placa||'--'}</span>
+        <span class="bst ${v.status==='em andamento'?'st-andamento':'st-concluida'}">
+          ${v.status==='em andamento'?'🔴 Em viagem':'✅ Concluída'}
+        </span>
+      </div>
+      <div class="vcard-body">
+        <div class="vi-item"><span class="vi-lbl">Motorista</span><span class="vi-val">${v.motorista}</span></div>
+        <div class="vi-item"><span class="vi-lbl">Data</span><span class="vi-val">${fmtDate(v.dataHoraSaida)}</span></div>
+        <div class="vi-item"><span class="vi-lbl">Destino</span><span class="vi-val">${v.destino}</span></div>
+        <div class="vi-item"><span class="vi-lbl">KM rodados</span><span class="vi-val">${km} km</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function verViagem(id) {
+  const v = S.viagens.find(x=>x.id===id);
+  if (!v) return;
+  const km = v.kmFinal ? fmtNum((parseFloat(v.kmFinal)-parseFloat(v.kmInicial)).toFixed(0)) : '--';
+  document.getElementById('mViagemBody').innerHTML = `
+    <div class="det-grid">
+      <div class="det-item"><span class="det-lbl">Placa</span><span class="det-val">${v.placa||'--'}</span></div>
+      <div class="det-item"><span class="det-lbl">Status</span>
+        <span class="bst ${v.status==='em andamento'?'st-andamento':'st-concluida'}">
+          ${v.status==='em andamento'?'🔴 Em viagem':'✅ Concluída'}</span></div>
+      <div class="det-item full"><span class="det-lbl">Motorista</span><span class="det-val">${v.motorista}</span></div>
+      <div class="det-item full"><span class="det-lbl">Destino</span><span class="det-val">${v.destino}</span></div>
+      <div class="det-item full"><span class="det-lbl">Motivo</span><span class="det-val">${v.motivo||'--'}</span></div>
+      <hr class="det-sep"/>
+      <div class="det-item"><span class="det-lbl">Saída</span><span class="det-val">${fmtDT(v.dataHoraSaida)}</span></div>
+      <div class="det-item"><span class="det-lbl">Retorno</span><span class="det-val">${v.dataHoraRetorno?fmtDT(v.dataHoraRetorno):'--'}</span></div>
+      <div class="det-item"><span class="det-lbl">KM Inicial</span><span class="det-val">${fmtNum(v.kmInicial)}</span></div>
+      <div class="det-item"><span class="det-lbl">KM Final</span><span class="det-val">${v.kmFinal?fmtNum(v.kmFinal):'--'}</span></div>
+      <hr class="det-sep"/>
+      <div class="det-item full" style="flex-direction:row;gap:8px;flex-wrap:wrap">
+        <span class="tag-km">📏 ${km} km</span>
+        ${v.tempoViagem?`<span class="tag-t">⏱ ${v.tempoViagem}</span>`:''}
+      </div>
+      <div class="det-item"><span class="det-lbl">Comb. Saída</span><span class="det-val">${v.combustivelSaida||'--'}</span></div>
+      <div class="det-item"><span class="det-lbl">Comb. Retorno</span><span class="det-val">${v.combustivelRetorno||'--'}</span></div>
+      <div class="det-item"><span class="det-lbl">Passageiros</span><span class="det-val">${v.passageiros||'0'}</span></div>
+      ${v.nomePassageiros?`<div class="det-item full"><span class="det-lbl">Nomes</span><span class="det-val">${v.nomePassageiros}</span></div>`:''}
+      ${v.ocorrencias?`<div class="det-item full"><span class="det-lbl">Ocorrências</span><span class="det-val">${v.ocorrencias}</span></div>`:''}
+      ${v.obs?`<div class="det-item full"><span class="det-lbl">Obs.</span><span class="det-val">${v.obs}</span></div>`:''}
+      ${v.geoSaida?`<div class="det-item full"><span class="det-lbl">📍 GPS Saída</span><span class="det-val">${v.geoSaida}</span></div>`:''}
+      ${v.geoRetorno?`<div class="det-item full"><span class="det-lbl">📍 GPS Retorno</span><span class="det-val">${v.geoRetorno}</span></div>`:''}
+    </div>`;
+  abrirModal('mViagem');
+}
+
+// ══════════════════════════════════════════════
+// VEÍCULOS
+// ══════════════════════════════════════════════
+function loadVeiculos() { renderVeiculos(S.veiculos); }
+
+function filtrarVeiculos() {
+  const q  = document.getElementById('fVeicBusca').value.toLowerCase();
+  const st = document.getElementById('fVeicSt').value;
+  renderVeiculos(S.veiculos.filter(v=>
+    (!q || v.placa.toLowerCase().includes(q) || v.modelo.toLowerCase().includes(q)) && (!st || v.status===st)
+  ));
+}
+
+function renderVeiculos(list) {
+  const c = document.getElementById('veiculosList');
+  if (!list.length) { c.innerHTML='<div class="empty"><span>🚙</span><p>Nenhum veículo encontrado</p></div>'; return; }
+  const ic = {Van:'🚐',Moto:'🏍️','Ônibus':'🚌',Caminhão:'🚛',Caminhonete:'🛻',Carro:'🚗'};
+  c.innerHTML = list.map(v=>`
+    <div class="veic-card" onclick="abrirModalVeiculo('${v.id}')">
+      <div class="veic-ico">${ic[v.tipo]||'🚗'}</div>
+      <div class="veic-info">
+        <div class="veic-placa">${v.placa}</div>
+        <div class="veic-modelo">${v.marca} ${v.modelo} ${v.ano}</div>
+        <div class="veic-setor">${v.setor||'--'}</div>
+        <div class="veic-km">📏 ${fmtNum(v.km)} km</div>
+      </div>
+      <span class="bst st-${v.status.replace(' ','-')}">${v.status}</span>
+    </div>`).join('');
+}
+
+function abrirModalVeiculo(id) {
+  document.getElementById('mvId').value='';
+  document.getElementById('mVeiculoTit').textContent='Novo Veículo';
+  ['mvPlaca','mvAno','mvMarca','mvModelo','mvKm','mvConsumo','mvSetor'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('mvTipo').value='Carro';
+  document.getElementById('mvStatus').value='Disponível';
+  if (id) {
+    const v = S.veiculos.find(x=>x.id===id);
+    if (!v) return;
+    document.getElementById('mvId').value=v.id;
+    document.getElementById('mVeiculoTit').textContent='Editar Veículo';
+    document.getElementById('mvPlaca').value=v.placa;
+    document.getElementById('mvAno').value=v.ano;
+    document.getElementById('mvMarca').value=v.marca;
+    document.getElementById('mvModelo').value=v.modelo;
+    document.getElementById('mvTipo').value=v.tipo;
+    document.getElementById('mvStatus').value=v.status;
+    document.getElementById('mvKm').value=v.km;
+    document.getElementById('mvConsumo').value=v.consumo;
+    document.getElementById('mvSetor').value=v.setor;
+  }
+  abrirModal('mVeiculo');
+}
+
+async function salvarVeiculo() {
+  const placa  = document.getElementById('mvPlaca').value.trim().toUpperCase();
+  const modelo = document.getElementById('mvModelo').value.trim();
+  const marca  = document.getElementById('mvMarca').value.trim();
+  const ano    = document.getElementById('mvAno').value;
+  if (!placa||!modelo||!marca||!ano) { showToast('⚠️ Preencha os campos obrigatórios','err'); return; }
+
+  const id = document.getElementById('mvId').value || 'V'+Date.now();
+  const v  = { id, placa, modelo, marca, ano,
+    tipo:   document.getElementById('mvTipo').value,
+    status: document.getElementById('mvStatus').value,
+    km:     document.getElementById('mvKm').value||'0',
+    consumo:document.getElementById('mvConsumo').value||'0',
+    setor:  document.getElementById('mvSetor').value,
+  };
+
+  showLoading('Salvando...');
+  try {
+    if (CFG.SCRIPT_URL) await apiCall('salvarVeiculo',{veiculo:v});
+    const idx = S.veiculos.findIndex(x=>x.id===id);
+    if (idx!==-1) S.veiculos[idx]=v; else S.veiculos.push(v);
+    hideLoading(); fecharModal('mVeiculo');
+    showToast('✅ Veículo salvo!','ok'); renderVeiculos(S.veiculos);
+  } catch(e) { hideLoading(); showToast('Erro: '+e.message,'err'); }
+}
+
+// ══════════════════════════════════════════════
+// MOTORISTAS
+// ══════════════════════════════════════════════
+function loadMotoristas() { renderMotoristas(S.motoristas); }
+
+function filtrarMotoristas() {
+  const q  = document.getElementById('fMotBusca').value.toLowerCase();
+  const st = document.getElementById('fMotSt').value;
+  renderMotoristas(S.motoristas.filter(m=>
+    (!q || m.nome.toLowerCase().includes(q) || (m.matricula||'').includes(q)) && (!st || m.status===st)
+  ));
+}
+
+function renderMotoristas(list) {
+  const c = document.getElementById('motoristasList');
+  if (!list.length) { c.innerHTML='<div class="empty"><span>👨‍✈️</span><p>Nenhum motorista encontrado</p></div>'; return; }
+  c.innerHTML = list.map(m=>{
+    const d = m.vencCnh ? (new Date(m.vencCnh)-new Date())/(864e5) : 999;
+    const cl = d<0?'style="color:var(--red)"':d<60?'style="color:var(--yel)"':'style="color:var(--t2)"';
+    return `
+    <div class="mot-card" onclick="abrirModalMotorista('${m.id}')">
+      <div class="mot-ava">${m.nome.charAt(0).toUpperCase()}</div>
+      <div class="mot-info">
+        <div class="mot-nome">${m.nome}</div>
+        <div class="mot-sub">CNH ${m.categoria} · Mat. ${m.matricula||'--'} · ${m.telefone||'--'}</div>
+        <div class="mot-cnh" ${cl}>CNH: ${m.vencCnh?fmtDate(m.vencCnh+'T12:00:00'):'--'}</div>
+      </div>
+      <span class="bst st-${m.status}">${m.status}</span>
+    </div>`; }).join('');
+}
+
+function abrirModalMotorista(id) {
+  document.getElementById('mmId').value='';
+  document.getElementById('mMotoristaTit').textContent='Novo Motorista';
+  ['mmNome','mmCpf','mmTel','mmCnh','mmVenc','mmMat'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('mmCat').value='AB';
+  document.getElementById('mmSt').value='Ativo';
+  if (id) {
+    const m = S.motoristas.find(x=>x.id===id);
+    if (!m) return;
+    document.getElementById('mmId').value=m.id;
+    document.getElementById('mMotoristaTit').textContent='Editar Motorista';
+    document.getElementById('mmNome').value=m.nome;
+    document.getElementById('mmCpf').value=m.cpf;
+    document.getElementById('mmTel').value=m.telefone;
+    document.getElementById('mmCnh').value=m.cnh;
+    document.getElementById('mmCat').value=m.categoria;
+    document.getElementById('mmVenc').value=m.vencCnh;
+    document.getElementById('mmMat').value=m.matricula;
+    document.getElementById('mmSt').value=m.status;
+  }
+  abrirModal('mMotorista');
+}
+
+async function salvarMotorista() {
+  const nome = document.getElementById('mmNome').value.trim();
+  if (!nome) { showToast('⚠️ Informe o nome','err'); return; }
+  const id = document.getElementById('mmId').value || 'M'+Date.now();
+  const m  = { id, nome,
+    cpf:      document.getElementById('mmCpf').value,
+    telefone: document.getElementById('mmTel').value,
+    cnh:      document.getElementById('mmCnh').value,
+    categoria:document.getElementById('mmCat').value,
+    vencCnh:  document.getElementById('mmVenc').value,
+    matricula:document.getElementById('mmMat').value,
+    status:   document.getElementById('mmSt').value,
+  };
+  showLoading('Salvando...');
+  try {
+    if (CFG.SCRIPT_URL) await apiCall('salvarMotorista',{motorista:m});
+    const idx = S.motoristas.findIndex(x=>x.id===id);
+    if (idx!==-1) S.motoristas[idx]=m; else S.motoristas.push(m);
+    hideLoading(); fecharModal('mMotorista');
+    showToast('✅ Motorista salvo!','ok'); renderMotoristas(S.motoristas);
+  } catch(e) { hideLoading(); showToast('Erro: '+e.message,'err'); }
+}
+
+// ══════════════════════════════════════════════
+// USUÁRIOS
+// ══════════════════════════════════════════════
+function abrirModalUsuario() {
+  ['muNome','muLogin','muSenha'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('muPerfil').value='motorista';
+  abrirModal('mUsuario');
+}
+
+function salvarUsuario() {
+  const nome  = document.getElementById('muNome').value.trim();
+  const login = document.getElementById('muLogin').value.trim();
+  const senha = document.getElementById('muSenha').value;
+  if (!nome||!login||!senha) { showToast('⚠️ Preencha todos os campos','err'); return; }
+  const novo = { id:'U'+Date.now(), nome, usuario:login, senha:btoa(senha), perfil:document.getElementById('muPerfil').value };
+  S.usuarios.push(novo);
+  localStorage.setItem('fc_users', JSON.stringify(S.usuarios));
+  fecharModal('mUsuario');
+  showToast('✅ Usuário criado!','ok');
+  renderUsuariosConfig();
+}
+
+// ══════════════════════════════════════════════
+// RELATÓRIOS
+// ══════════════════════════════════════════════
+const REL_TITS = {
+  periodo:'Por Período', veiculo:'Por Veículo', motorista:'Por Motorista',
+  consumo:'Combustível', frota:'Frota Geral', km:'Quilometragem',
+};
+
+function showRelFiltros(tipo) {
+  S.relTipo = tipo;
+  document.getElementById('relFiltroTit').textContent = '🔍 Filtros — '+REL_TITS[tipo];
+  let html = '';
+  if (tipo==='periodo') {
+    html = `<div class="field"><label>Data Início</label><input type="date" id="rfDe"/></div>
+            <div class="field"><label>Data Fim</label><input type="date" id="rfAte"/></div>`;
+  } else if (tipo==='veiculo') {
+    html = `<div class="field"><label>Veículo</label><select id="rfVeic"><option value="">Todos</option>${S.veiculos.map(v=>`<option value="${v.id}">${v.placa} — ${v.modelo}</option>`).join('')}</select></div>`;
+  } else if (tipo==='motorista') {
+    html = `<div class="field"><label>Motorista</label><select id="rfMot"><option value="">Todos</option>${S.motoristas.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')}</select></div>`;
+  } else {
+    html = '<p style="color:var(--t2);font-size:.88rem">Clique em "Gerar Relatório" para visualizar todos os dados.</p>';
+  }
+  document.getElementById('relFiltroBody').innerHTML = html;
+  document.getElementById('relFiltroBox').classList.remove('hidden');
+  document.getElementById('relOutput').classList.add('hidden');
+}
+
+function gerarRelatorio() {
+  const tipo = S.relTipo;
+  let rows=[], cols=[], titulo=REL_TITS[tipo];
+  let dados = [...S.viagens];
+
+  if (tipo==='periodo') {
+    const de = document.getElementById('rfDe')?.value;
+    const at = document.getElementById('rfAte')?.value;
+    if (de) dados = dados.filter(v=>new Date(v.dataHoraSaida)>=new Date(de));
+    if (at) dados = dados.filter(v=>new Date(v.dataHoraSaida)<=new Date(at+'T23:59:59'));
+    cols = ['Placa','Motorista','Destino','Data Saída','KM Rodados','Status'];
+    rows = dados.map(v=>[v.placa,v.motorista,v.destino,fmtDT(v.dataHoraSaida),
+      v.kmFinal?fmtNum((parseFloat(v.kmFinal)-parseFloat(v.kmInicial)).toFixed(0))+' km':'--', v.status]);
+  } else if (tipo==='veiculo') {
+    const fv = document.getElementById('rfVeic')?.value;
+    if (fv) dados = dados.filter(v=>v.veiculoId===fv);
+    cols = ['Placa','Motorista','Destino','Data','KM Rodados','Status'];
+    rows = dados.map(v=>[v.placa,v.motorista,v.destino,fmtDate(v.dataHoraSaida),
+      v.kmFinal?fmtNum((parseFloat(v.kmFinal)-parseFloat(v.kmInicial)).toFixed(0))+' km':'--', v.status]);
+  } else if (tipo==='motorista') {
+    const fm = document.getElementById('rfMot')?.value;
+    if (fm) dados = dados.filter(v=>v.motoristaId===fm);
+    cols = ['Motorista','Destino','Data','KM Rodados','Status'];
+    rows = dados.map(v=>[v.motorista,v.destino,fmtDate(v.dataHoraSaida),
+      v.kmFinal?fmtNum((parseFloat(v.kmFinal)-parseFloat(v.kmInicial)).toFixed(0))+' km':'--', v.status]);
+  } else if (tipo==='consumo') {
+    cols = ['Placa','Modelo','KM Total','Qtd. Viagens','Consumo Médio'];
+    rows = S.veiculos.map(v=>{
+      const vgs = S.viagens.filter(t=>t.veiculoId===v.id&&t.kmFinal);
+      const km  = vgs.reduce((a,t)=>a+parseFloat(t.kmFinal)-parseFloat(t.kmInicial),0);
+      return [v.placa,`${v.marca} ${v.modelo}`,fmtNum(km.toFixed(0))+' km', vgs.length, v.consumo?v.consumo+' km/l':'--'];
+    });
+  } else if (tipo==='frota') {
+    cols = ['Placa','Marca/Modelo','Ano','Tipo','Setor','Status','KM Atual'];
+    rows = S.veiculos.map(v=>[v.placa,`${v.marca} ${v.modelo}`,v.ano,v.tipo,v.setor||'--',v.status,fmtNum(v.km)]);
+  } else if (tipo==='km') {
+    cols = ['Placa','Modelo','KM Atual','KM Rodados (total)','Qtd. Viagens'];
+    rows = S.veiculos.map(v=>{
+      const vgs  = S.viagens.filter(t=>t.veiculoId===v.id&&t.kmFinal);
+      const kmR  = vgs.reduce((a,t)=>a+parseFloat(t.kmFinal)-parseFloat(t.kmInicial),0);
+      return [v.placa,`${v.marca} ${v.modelo}`,fmtNum(v.km)+' km',fmtNum(kmR.toFixed(0))+' km',vgs.length];
+    });
+  }
+
+  document.getElementById('relFiltroBox').classList.add('hidden');
+  const out = document.getElementById('relOutput');
+  out.classList.remove('hidden');
+  out.innerHTML = `
+    <div class="card">
+      <div class="rel-output-hd"><h3>📊 ${titulo}</h3><span class="pill orange">${rows.length} registros</span></div>
+      <div class="rel-table-wrap">
+        <table class="rel-table">
+          <thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
+          <tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c??'--'}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+  out.scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════
+// CONFIGURAÇÕES
+// ══════════════════════════════════════════════
+function loadConfig() {
+  document.getElementById('cfgUrl').value = CFG.SCRIPT_URL;
+  document.getElementById('cfgModo').textContent = CFG.SCRIPT_URL ? 'Conectado' : 'Demo (offline)';
+  renderUsuariosConfig();
+}
+
+function salvarConfig() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  CFG.SCRIPT_URL = url;
+  localStorage.setItem('fc_url', url);
+  showToast('✅ URL salva!','ok');
+  document.getElementById('cfgModo').textContent = url ? 'Conectado' : 'Demo (offline)';
+}
+
+async function testarConexao() {
+  if (!CFG.SCRIPT_URL) { showToast('⚠️ Configure a URL primeiro','err'); return; }
+  showLoading('Testando...');
+  const msg = document.getElementById('cfgMsg');
+  try {
+    const d = await apiCall('ping');
+    hideLoading();
+    msg.className='info-box';
+    msg.textContent = '✅ Conexão OK! ' + (d.message||'');
+    msg.classList.remove('hidden');
+  } catch(e) {
+    hideLoading();
+    msg.className='alert-err';
+    msg.textContent = '❌ Falhou: '+e.message;
+    msg.classList.remove('hidden');
+  }
+}
+
+function renderUsuariosConfig() {
+  const saved = JSON.parse(localStorage.getItem('fc_users')||'[]');
+  S.usuarios = saved;
+  const todos = [...DEMO_USERS, ...saved];
+  const el = document.getElementById('cfgUsuarios');
+  if (!el) return;
+  el.innerHTML = todos.map(u=>`
+    <div class="mini-user">
+      <span>${u.nome} <span style="color:var(--t3);font-size:.75rem">(${u.usuario})</span></span>
+      <span class="rpill">${u.perfil}</span>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// GPS
+// ══════════════════════════════════════════════
+function capturarGPS(tipo) {
+  if (!navigator.geolocation) { showToast('GPS não disponível','err'); return; }
+  showToast('📍 Obtendo localização...','');
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const c = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+      document.getElementById(tipo==='saida'?'sGeo':'rGeo').value = c;
+      showToast('📍 Localização capturada!','ok');
+    },
+    e => showToast('Erro GPS: '+e.message,'err'),
+    { enableHighAccuracy:true, timeout:10000 }
+  );
+}
+
+// ══════════════════════════════════════════════
+// OFFLINE
+// ══════════════════════════════════════════════
+function addOffline(item) {
+  S.offlineQ.push({...item, ts:Date.now()});
+  localStorage.setItem(CFG.OFFLINE_Q, JSON.stringify(S.offlineQ));
+}
+
+async function syncOffline() {
+  if (!CFG.SCRIPT_URL || !S.offlineQ.length) return;
+  const q = [...S.offlineQ];
+  S.offlineQ = [];
+  localStorage.setItem(CFG.OFFLINE_Q,'[]');
+  for (const it of q) {
+    try { await apiCall(it.action, it); }
+    catch { S.offlineQ.push(it); }
+  }
+  if (S.offlineQ.length) localStorage.setItem(CFG.OFFLINE_Q, JSON.stringify(S.offlineQ));
+  else showToast('✅ Dados sincronizados!','ok');
+}
+
+window.addEventListener('online',  () => { document.getElementById('offlineDot').classList.add('hidden'); syncOffline(); });
+window.addEventListener('offline', () => { document.getElementById('offlineDot').classList.remove('hidden'); showToast('📵 Offline — dados salvos localmente','err'); });
+
+// ══════════════════════════════════════════════
+// MODAIS
+// ══════════════════════════════════════════════
+function abrirModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function fecharModal(id) {
+  document.getElementById(id).classList.add('hidden');
+  document.body.style.overflow='';
+}
+// Clique no overlay fecha modal
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('mo')) fecharModal(e.target.id);
+});
+
+// ══════════════════════════════════════════════
+// SIDEBAR / USER MENU
+// ══════════════════════════════════════════════
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('hidden');
+  document.getElementById('sbOverlay').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('hidden');
+  document.getElementById('sbOverlay').classList.add('hidden');
+  document.body.style.overflow='';
+}
+function toggleSidebar() {
+  if (document.getElementById('sidebar').classList.contains('hidden')) openSidebar();
+  else closeSidebar();
+}
+function toggleUserMenu() {
+  document.getElementById('udropdown').classList.toggle('hidden');
+}
+function closeUserMenu() {
+  document.getElementById('udropdown').classList.add('hidden');
+}
+document.addEventListener('click', e => {
+  const dd = document.getElementById('udropdown');
+  const btn = document.getElementById('avaTop')?.closest('button');
+  if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) dd.classList.add('hidden');
+});
+
+// ══════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════
+function showLoading(msg='Carregando...') {
+  document.getElementById('loadingTxt').textContent = msg;
+  document.getElementById('loadingOv').classList.remove('hidden');
+}
+function hideLoading() { document.getElementById('loadingOv').classList.add('hidden'); }
+
+let _tt;
+function showToast(msg, type='') {
+  clearTimeout(_tt);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type?' '+type:'');
+  t.classList.remove('hidden');
+  _tt = setTimeout(()=>t.classList.add('hidden'), 3200);
+}
+
+function showErr(el, msg) {
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ══════════════════════════════════════════════
+// FORMATADORES
+// ══════════════════════════════════════════════
+function fmtDate(iso) {
+  try { return new Date(iso.includes('T')?iso:iso+'T12:00:00').toLocaleDateString('pt-BR'); }
+  catch { return iso||'--'; }
+}
+function fmtTime(iso) {
+  try { return new Date(iso).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
+  catch { return '--'; }
+}
+function fmtDT(iso) {
+  try { return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  catch { return iso||'--'; }
+}
+function fmtNum(n) {
+  try { return parseFloat(n).toLocaleString('pt-BR'); }
+  catch { return n||'0'; }
+}
+function toDateIn(d) { return d.toISOString().split('T')[0]; }
+function toTimeIn(d) { return d.toTimeString().slice(0,5); }
+function cap(s) { return s?s.charAt(0).toUpperCase()+s.slice(1):s; }
+
+// ══════════════════════════════════════════════
+// PWA
+// ══════════════════════════════════════════════
+function setupPWA() {
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+</script>
 </body>
 </html>
