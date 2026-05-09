@@ -756,7 +756,9 @@ function iniciarApp() {
     const el = document.getElementById(id);
     if (el) el.style.display = isAdmin ? '' : 'none';
   });
-  nav('dashboard');
+    nav('dashboard');
+  // Carrega dados da planilha em background
+  carregarDaPlanilha().then(() => loadDashboard());
 }
 
 // ── LOGIN ──────────────────────────────────────────
@@ -765,6 +767,31 @@ function doLogin() {
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginErr');
   if (!u || !p) { err.textContent = 'Preencha usuário e senha.'; err.classList.remove('hidden'); return; }
+  // Tenta login na planilha primeiro
+  const url = localStorage.getItem('fc_url') || '';
+  if (url) {
+    showLoading('Verificando credenciais...');
+    fetch(url, { method:'POST', body: JSON.stringify({ action:'login', usuario:u, senha:btoa(p) }), redirect:'follow' })
+      .then(r => r.json())
+      .then(d => {
+        hideLoading();
+        if (d.success) {
+          err.classList.add('hidden');
+          S.user = d.user;
+          localStorage.setItem('fc_session', JSON.stringify(d.user));
+          iniciarApp();
+        } else {
+          // Fallback local
+          loginLocal(u, p, err);
+        }
+      })
+      .catch(() => { hideLoading(); loginLocal(u, p, err); });
+  } else {
+    loginLocal(u, p, err);
+  }
+}
+
+function loginLocal(u, p, err) {
   const found = DEMO_USERS.find(x => x.usuario === u && x.senha === btoa(p));
   if (found) {
     err.classList.add('hidden');
@@ -789,10 +816,80 @@ function doLogout() {
 function togglePass() { const i=document.getElementById('loginPass'); i.type=i.type==='password'?'text':'password'; }
 
 // ── PERSISTÊNCIA ──────────────────────────────────
+const API_URL = () => localStorage.getItem('fc_url') || '';
+
+async function apiCall(action, data = {}) {
+  const url = API_URL();
+  if (!url) throw new Error('URL não configurada');
+  const resp = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ action, ...data }),
+    redirect: 'follow',
+  });
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  return resp.json();
+}
+
 function salvar() {
   localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
   localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
   localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+  // Sync para planilha em background
+  syncPlanilha();
+}
+
+async function syncPlanilha() {
+  // Sync é feito por cada operação individual
+}
+
+async function carregarDaPlanilha() {
+  const url = API_URL();
+  if (!url) return; // usa dados locais
+  try {
+    showLoading('Carregando dados da planilha...');
+    const [rv, rm, rvg] = await Promise.all([
+      apiCall('getVeiculos'),
+      apiCall('getMotoristas'),
+      apiCall('getViagens'),
+    ]);
+    if (rv.success && rv.data.length > 0) {
+      veiculos = rv.data.map(v => ({
+        id: v.id, placa: v.placa, marca: v.marca, modelo: v.modelo,
+        ano: v.ano, tipo: v.tipo, setor: v.setor, status: v.status,
+        km: v.km, consumo: v.consumo,
+      }));
+      localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+    }
+    if (rm.success && rm.data.length > 0) {
+      motoristas = rm.data.map(m => ({
+        id: m.id, nome: m.nome, cpf: m.cpf, telefone: m.telefone,
+        cnh: m.cnh, categoria: m.categoria, vencCnh: m.venccnh,
+        matricula: m.matricula, status: m.status,
+      }));
+      localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
+    }
+    if (rvg.success && rvg.data.length > 0) {
+      viagens = rvg.data.map(v => ({
+        id: v.id, veiculoId: v.veiculoid, placa: v.placa,
+        motorista: v.motorista, motoristaId: v.motoristaid,
+        destino: v.destino, motivo: v.motivo,
+        kmInicial: v.kminicial, kmFinal: v.kmfinal, kmRodados: v.kmrodados,
+        dataHoraSaida: v.datahorasaida, dataHoraRetorno: v.datahoraretorno,
+        tempoViagem: v.tempoviagem, status: v.status,
+        combustivelSaida: v.combustivelsaida, combustivelRetorno: v.combustivelretorno,
+        passageiros: v.passageiros, nomePassageiros: v.nomepassageiros,
+        geoSaida: v.geosaida, geoRetorno: v.georetorno,
+        ocorrencias: v.ocorrencias, obs: v.observacoes,
+        usuarioRegistro: v.usuarioregistro,
+      }));
+      localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+    }
+    hideLoading();
+    toast('✅ Dados sincronizados com a planilha!', 'ok');
+  } catch(e) {
+    hideLoading();
+    toast('⚠️ Usando dados locais — ' + e.message, '');
+  }
 }
 
 // ── NAVEGAÇÃO ──────────────────────────────────────
@@ -895,7 +992,15 @@ function registrarSaida() {
   showLoading('Registrando saída...');
   setTimeout(()=>{
     const viagem={id:'T'+Date.now(),veiculoId:vId,placa:veiculo.placa,motorista:motorista.nome,motoristaId:mId,destino:dest,motivo:mot,kmInicial:kmI,kmFinal:'',kmRodados:'',dataHoraSaida:`${data}T${hora}:00`,dataHoraRetorno:'',tempoViagem:'',status:'em andamento',combustivelSaida:document.getElementById('sComb').value,combustivelRetorno:'',passageiros:document.getElementById('sPassNum').value||'0',nomePassageiros:document.getElementById('sPassNomes').value,geoSaida:document.getElementById('sGeo').value,geoRetorno:'',ocorrencias:'',obs:document.getElementById('sObs').value};
-    viagens.unshift(viagem); veiculo.status='Em Uso'; veiculo.km=kmI; salvar();
+    viagens.unshift(viagem); veiculo.status='Em Uso'; veiculo.km=kmI;
+    localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+    localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+    // Salva na planilha
+    const url = API_URL();
+    if (url) {
+      apiCall('registrarSaida', { viagem })
+        .catch(e => console.warn('Erro ao salvar na planilha:', e.message));
+    }
     hideLoading(); toast('✅ Saída registrada com sucesso!','ok');
     ['sVeiculo','sMotorista','sKmIni','sDestino','sMotivo','sPassNum','sPassNomes','sGeo','sObs'].forEach(id=>{document.getElementById(id).value='';});
     document.getElementById('veicPrev').classList.add('hidden');
@@ -948,7 +1053,20 @@ function registrarRetorno() {
     if(idx!==-1) viagens[idx]={...viagens[idx],kmFinal:kmF,kmRodados:rod.toFixed(0),dataHoraRetorno:dtRet,tempoViagem:tempoH+'h',status:'concluída',combustivelRetorno:document.getElementById('rComb').value,geoRetorno:document.getElementById('rGeo').value,ocorrencias:document.getElementById('rOcorr').value};
     const vc=veiculos.find(v=>v.id===viagem.veiculoId);
     if(vc){vc.status='Disponível';vc.km=kmF;}
-    salvar(); hideLoading(); toast(`✅ ${fmtN(rod.toFixed(0))} km registrados!`,'ok'); nav('dashboard');
+    localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+    localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+    // Salva na planilha
+    const urlR = API_URL();
+    if (urlR) {
+      apiCall('registrarRetorno', { retorno: {
+        viagemId: vId, kmFinal: kmF, kmRodados: rod.toFixed(0),
+        dataHoraRetorno: dtRet, tempoViagem: tempoH+'h',
+        combustivelRetorno: document.getElementById('rComb').value,
+        geoRetorno: document.getElementById('rGeo').value,
+        ocorrencias: document.getElementById('rOcorr').value,
+      }}).catch(e => console.warn('Erro retorno planilha:', e.message));
+    }
+    hideLoading(); toast(`✅ ${fmtN(rod.toFixed(0))} km registrados!`,'ok'); nav('dashboard');
   }, 600);
 }
 
@@ -1085,8 +1203,18 @@ function salvarVeiculo() {
   const v={id,placa,modelo,marca,ano,tipo:document.getElementById('fvTipo').value,status:document.getElementById('fvStatus').value,km:document.getElementById('fvKm').value||'0',consumo:document.getElementById('fvConsumo').value||'0',setor:document.getElementById('fvSetor').value};
   const idx=veiculos.findIndex(x=>x.id===id);
   if(idx!==-1) veiculos[idx]=v; else veiculos.push(v);
-  salvar(); fecharFormVeiculo();
-  toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok');
+  localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+  fecharFormVeiculo();
+  // Salva na planilha
+  const url = API_URL();
+  if (url) {
+    showLoading('Salvando veículo...');
+    apiCall('salvarVeiculo', { veiculo: v })
+      .then(() => { hideLoading(); toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok'); })
+      .catch(e => { hideLoading(); toast('⚠️ Salvo localmente. Erro planilha: '+e.message,''); });
+  } else {
+    toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok');
+  }
   filtrarVeiculos();
 }
 
@@ -1162,8 +1290,18 @@ function salvarMotorista() {
   const m={id,nome,cpf:document.getElementById('fmCpf').value,telefone:document.getElementById('fmTel').value,cnh:document.getElementById('fmCnh').value,categoria:document.getElementById('fmCat').value,vencCnh:document.getElementById('fmVenc').value,matricula:document.getElementById('fmMat').value,status:document.getElementById('fmSt').value};
   const idx=motoristas.findIndex(x=>x.id===id);
   if(idx!==-1) motoristas[idx]=m; else motoristas.push(m);
-  salvar(); fecharFormMotorista();
-  toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok');
+  localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
+  fecharFormMotorista();
+  // Salva na planilha
+  const url = API_URL();
+  if (url) {
+    showLoading('Salvando motorista...');
+    apiCall('salvarMotorista', { motorista: m })
+      .then(() => { hideLoading(); toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok'); })
+      .catch(e => { hideLoading(); toast('⚠️ Salvo localmente. Erro planilha: '+e.message,''); });
+  } else {
+    toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok');
+  }
   filtrarMotoristas();
 }
 
@@ -1181,12 +1319,16 @@ function confirmarAcao() {
     const v=veiculos.find(x=>x.id===removerId);
     if(v&&v.status==='Em Uso'){fecharConfirm();toast('⚠️ Não é possível remover um veículo em uso.','err');return;}
     veiculos=veiculos.filter(x=>x.id!==removerId);
-    salvar(); fecharConfirm(); toast('🗑️ Veículo removido.',''); filtrarVeiculos();
+    localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+    if (API_URL()) apiCall('removerVeiculo', { id: removerId }).catch(()=>{});
+    fecharConfirm(); toast('🗑️ Veículo removido.',''); filtrarVeiculos();
   } else if(removerTipo==='motorista') {
     const emViagem=viagens.some(v=>v.motoristaId===removerId&&v.status==='em andamento');
     if(emViagem){fecharConfirm();toast('⚠️ Motorista está em viagem, não pode ser removido.','err');return;}
     motoristas=motoristas.filter(x=>x.id!==removerId);
-    salvar(); fecharConfirm(); toast('🗑️ Motorista removido.',''); filtrarMotoristas();
+    localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
+    if (API_URL()) apiCall('removerMotorista', { id: removerId }).catch(()=>{});
+    fecharConfirm(); toast('🗑️ Motorista removido.',''); filtrarMotoristas();
   }
 }
 
@@ -1219,8 +1361,9 @@ function gerarRel(tipo) {
 
 // ── CONFIGURAÇÕES ──────────────────────────────
 function loadConfig() {
-  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url')||'';
-  document.getElementById('cfgModo').textContent = localStorage.getItem('fc_url')?'Conectado ao Google Sheets':'Demo (dados locais)';
+  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url') || 'https://script.google.com/macros/s/AKfycbz7zD5rXSnZnZufzGbfWHa9FvC_uZPPWBqQMzh7k_LyiQBhpbZqk_1mPMyMjf71K1Ba/exec';
+  if (!localStorage.getItem('fc_url')) localStorage.setItem('fc_url', 'https://script.google.com/macros/s/AKfycbz7zD5rXSnZnZufzGbfWHa9FvC_uZPPWBqQMzh7k_LyiQBhpbZqk_1mPMyMjf71K1Ba/exec');
+  document.getElementById('cfgModo').textContent = localStorage.getItem('fc_url') ? 'Conectado ao Google Sheets ✅' : 'Demo (dados locais)';
 }
 function salvarConfig() {
   const url=document.getElementById('cfgUrl').value.trim();
@@ -1229,12 +1372,23 @@ function salvarConfig() {
   toast('✅ URL salva!','ok');
 }
 function testarConexao() {
-  const url=localStorage.getItem('fc_url');
-  if(!url){toast('⚠️ Configure a URL primeiro','err');return;}
+  if(!API_URL()){toast('⚠️ Configure a URL primeiro','err');return;}
   showLoading('Testando conexão...');
-  fetch(url,{method:'POST',body:JSON.stringify({action:'ping'}),redirect:'follow'})
-    .then(r=>r.json()).then(d=>{hideLoading();const m=document.getElementById('cfgMsg');m.textContent='✅ Conexão OK! '+( d.message||'');m.classList.remove('hidden');})
-    .catch(e=>{hideLoading();const m=document.getElementById('cfgMsg');m.className='err';m.textContent='❌ Erro: '+e.message;m.classList.remove('hidden');});
+  apiCall('ping')
+    .then(d=>{
+      hideLoading();
+      const m=document.getElementById('cfgMsg');
+      m.className='info'; m.textContent='✅ '+d.message;
+      m.classList.remove('hidden');
+      // Carrega dados ao conectar
+      carregarDaPlanilha().then(()=>loadDashboard());
+    })
+    .catch(e=>{
+      hideLoading();
+      const m=document.getElementById('cfgMsg');
+      m.className='err'; m.textContent='❌ Erro: '+e.message;
+      m.classList.remove('hidden');
+    });
 }
 
 // ── LOGO ───────────────────────────────────────
