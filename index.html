@@ -49,10 +49,7 @@ input,select,textarea,button{font-family:inherit}
 .login-wrap>p{color:var(--t2);font-size:.85rem;margin-top:-18px}
 .login-card{width:100%;background:rgba(15,28,53,.85);backdrop-filter:blur(20px);border:1px solid var(--b2);border-radius:var(--r);padding:26px 20px;display:flex;flex-direction:column;gap:16px}
 .login-card h2{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
-.demo-box{border-top:1px solid var(--b);padding-top:12px;display:flex;flex-direction:column;gap:5px}
-.demo-box p{color:var(--t3);font-size:.72rem;margin-bottom:3px}
-.demo-btn{background:var(--bg3);border:1px solid var(--b);border-radius:var(--r2);color:var(--t2);font-size:.78rem;padding:7px 11px;text-align:left;cursor:pointer;transition:background .15s;width:100%}
-.demo-btn:hover{background:var(--card2)}
+
 .demo-btn b{color:var(--blue);margin-right:5px}
 
 /* FIELDS */
@@ -316,12 +313,7 @@ textarea{resize:vertical;min-height:70px}
       </div>
       <div id="loginErr" class="err hidden"></div>
       <button class="btn" onclick="doLogin()">Entrar no sistema</button>
-      <div class="demo-box">
-        <p>Contas demo:</p>
-        <button class="demo-btn" onclick="fillDemo('admin','admin123')"><b>Admin</b> admin / admin123</button>
-        <button class="demo-btn" onclick="fillDemo('motorista','motor123')"><b>Motorista</b> motorista / motor123</button>
-        <button class="demo-btn" onclick="fillDemo('supervisor','super123')"><b>Supervisor</b> supervisor / super123</button>
-      </div>
+
     </div>
   </div>
 </div>
@@ -793,7 +785,7 @@ function doLogout() {
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
 }
-function fillDemo(u,p) { document.getElementById('loginUser').value=u; document.getElementById('loginPass').value=p; }
+
 function togglePass() { const i=document.getElementById('loginPass'); i.type=i.type==='password'?'text':'password'; }
 
 // ── PERSISTÊNCIA ──────────────────────────────────
