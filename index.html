@@ -23,8 +23,6 @@ input,select,textarea,button{font-family:inherit}
   --org:#F97316;--purp:#A855F7;--red:#EF4444;--yel:#EAB308;
   --nh:58px;--bh:64px;--r:14px;--r2:8px;
 }
-
-/* SPLASH */
 .splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px}
 .spl-icon{width:84px;height:84px;background:linear-gradient(135deg,var(--blue),var(--purp));border-radius:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 56px rgba(74,138,255,.5);animation:float 3s ease-in-out infinite}
 .spl-icon svg{width:54px;height:54px}
@@ -35,8 +33,6 @@ input,select,textarea,button{font-family:inherit}
 @keyframes bar{from{width:0}to{width:100%}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-
-/* LOGIN */
 .login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .login-bg{position:absolute;inset:0;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.2}
@@ -49,10 +45,6 @@ input,select,textarea,button{font-family:inherit}
 .login-wrap>p{color:var(--t2);font-size:.85rem;margin-top:-18px}
 .login-card{width:100%;background:rgba(15,28,53,.85);backdrop-filter:blur(20px);border:1px solid var(--b2);border-radius:var(--r);padding:26px 20px;display:flex;flex-direction:column;gap:16px}
 .login-card h2{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
-
-.demo-btn b{color:var(--blue);margin-right:5px}
-
-/* FIELDS */
 .field{display:flex;flex-direction:column;gap:5px}
 label,.lbl{font-size:.73rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
 .req{color:var(--red)}
@@ -66,8 +58,6 @@ input::placeholder,textarea::placeholder{color:var(--t3)}
 select option{background:var(--bg2)}
 textarea{resize:vertical;min-height:70px}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* BUTTONS */
 .btn{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;border-radius:var(--r2);font-size:.9rem;font-weight:600;padding:12px 18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s,transform .1s;width:100%}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:linear-gradient(135deg,var(--green),var(--grn2))}
@@ -78,11 +68,7 @@ textarea{resize:vertical;min-height:70px}
 .btn-gps{background:var(--card2);border:1.5px solid var(--b2);border-radius:var(--r2);color:var(--blue);font-size:.8rem;font-weight:600;padding:10px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--r2);color:var(--red);padding:9px 12px;font-size:.83rem}
 .info{background:rgba(74,138,255,.1);border:1px solid rgba(74,138,255,.2);border-radius:var(--r2);color:var(--blue);padding:9px 12px;font-size:.85rem}
-
-/* APP */
 .app{display:flex;flex-direction:column;min-height:100dvh}
-
-/* TOPBAR */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nh);background:rgba(6,12,26,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 14px}
 .tb-l{display:flex;align-items:center;gap:10px}
 .ham{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4.5px;padding:6px}
@@ -94,8 +80,6 @@ textarea{resize:vertical;min-height:70px}
 .tb-sec{font-size:.68rem;color:var(--t3)}
 .ava-btn{background:none;border:none;cursor:pointer;padding:2px}
 .ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purp));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;color:#fff}
-
-/* USER DROPDOWN */
 .udrop{position:fixed;top:62px;right:12px;z-index:200;background:var(--card);border:1px solid var(--b2);border-radius:var(--r);box-shadow:0 12px 48px rgba(0,0,0,.65);width:210px;overflow:hidden;animation:fadeDown .18s ease}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .udrop-hd{display:flex;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--b)}
@@ -105,8 +89,6 @@ textarea{resize:vertical;min-height:70px}
 .udrop-btn{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;cursor:pointer;color:var(--t2);font-size:.87rem;padding:12px 14px;text-align:left;transition:background .15s}
 .udrop-btn:hover{background:var(--card2)}
 .udrop-btn.red{color:var(--red)}
-
-/* SIDEBAR */
 .sb-ov{position:fixed;inset:0;z-index:89;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)}
 .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:90;width:265px;background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;animation:slideIn .22s ease}
 @keyframes slideIn{from{transform:translateX(-100%)}to{transform:none}}
@@ -122,24 +104,16 @@ textarea{resize:vertical;min-height:70px}
 .sb-btn.red{color:var(--red)}
 .sb-btn.red:hover{background:rgba(239,68,68,.1)}
 .sb-foot{padding:8px;border-top:1px solid var(--b)}
-
-/* CONTENT */
 .content{flex:1;padding:calc(var(--nh)+14px) 14px calc(var(--bh)+14px);max-width:600px;margin:0 auto;width:100%}
 .sec{display:none;flex-direction:column;gap:14px;animation:fadeUp .25s ease}
 .sec.active{display:flex}
-
-/* PAGE HEADER */
 .ph{display:flex;align-items:center;justify-content:space-between;padding-bottom:4px}
 .pt{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800}
 .ph-btns{display:flex;gap:8px;align-items:center}
-
-/* BOTTOM NAV */
 .botnav{position:fixed;bottom:0;left:0;right:0;z-index:50;height:var(--bh);background:rgba(6,12,26,.95);backdrop-filter:blur(20px);border-top:1px solid var(--b);display:flex;align-items:center;padding:0 2px;padding-bottom:env(safe-area-inset-bottom,0)}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:100%;background:none;border:none;cursor:pointer;color:var(--t3);font-size:.57rem;font-weight:500;padding:0 1px;transition:color .15s;min-width:0}
 .bn svg{width:20px;height:20px}
 .bn.active{color:var(--blue)}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:13px 11px;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden}
 .stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
@@ -150,15 +124,11 @@ textarea{resize:vertical;min-height:70px}
 .stat-ic{font-size:1.4rem}
 .stat-v{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1}
 .stat-l{font-size:.69rem;color:var(--t2);margin-top:2px}
-
-/* CARD */
 .card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden}
 .card-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--b)}
 .card-hd h3{font-size:.88rem;font-weight:600}
 .pill{border-radius:99px;padding:2px 9px;font-size:.72rem;font-weight:700;background:rgba(249,115,22,.15);color:var(--org)}
 .pill.r{background:rgba(239,68,68,.15);color:var(--red)}
-
-/* LIST ITEMS */
 .trip-item,.list-item{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--b);cursor:pointer;transition:background .15s;gap:10px}
 .trip-item:last-child,.list-item:last-child{border-bottom:none}
 .trip-item:hover,.list-item:hover{background:var(--card2)}
@@ -169,8 +139,6 @@ textarea{resize:vertical;min-height:70px}
 .li-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
 .li-ico{width:42px;height:42px;background:var(--bg3);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
 .li-ava{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purp));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#fff;flex-shrink:0}
-
-/* STATUS BADGE */
 .bst{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.71rem;font-weight:600;white-space:nowrap}
 .bst-disp{background:rgba(34,197,94,.15);color:var(--green)}
 .bst-uso{background:rgba(249,115,22,.15);color:var(--org)}
@@ -179,8 +147,6 @@ textarea{resize:vertical;min-height:70px}
 .bst-ok{background:rgba(34,197,94,.15);color:var(--green)}
 .bst-ativo{background:rgba(34,197,94,.15);color:var(--green)}
 .bst-inativo{background:rgba(239,68,68,.15);color:var(--red)}
-
-/* FORM CARD */
 .form-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:13px}
 .gps-row{display:flex;gap:8px}
 .gps-row input{flex:1}
@@ -188,24 +154,16 @@ textarea{resize:vertical;min-height:70px}
 .prow{display:flex;gap:8px;font-size:.82rem}
 .pk{color:var(--t2);font-weight:500;min-width:70px;flex-shrink:0}
 .km-info{background:rgba(74,138,255,.1);border:1px solid rgba(74,138,255,.2);border-radius:var(--r2);color:var(--blue);padding:9px 12px;font-size:.85rem}
-
-/* FILTERS */
 .filters{display:flex;flex-direction:column;gap:8px}
 .filters-row{display:flex;gap:8px;flex-wrap:wrap}
 .filters-row>*{flex:1;min-width:100px}
-
-/* EMPTY */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 14px;gap:8px}
 .empty span{font-size:2rem;opacity:.3}
 .empty p{color:var(--t3);font-size:.84rem}
-
-/* ALERTS */
 .alert-item{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b)}
 .alert-item:last-child{border-bottom:none}
 .ai-t{font-size:.83rem;font-weight:500}
 .ai-s{font-size:.72rem;color:var(--t2)}
-
-/* MODAL */
 .mo{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center}
 .modal{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:600px;max-height:90dvh;display:flex;flex-direction:column;animation:slideUp .22s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
@@ -222,10 +180,8 @@ textarea{resize:vertical;min-height:70px}
 .det-sep{grid-column:1/-1;border:none;border-top:1px solid var(--b)}
 .tag-km{background:rgba(74,138,255,.1);color:var(--blue);border-radius:99px;padding:4px 11px;font-size:.82rem;font-weight:600;display:inline-block}
 .tag-t{background:rgba(168,85,247,.1);color:var(--purp);border-radius:99px;padding:4px 11px;font-size:.82rem;font-weight:600;display:inline-block}
-
-/* RELATÓRIOS */
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;cursor:pointer;transition:all .2s;width:100%;border:1px solid var(--b)}
+.rel-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;cursor:pointer;transition:all .2s;width:100%}
 .rel-card:hover{background:var(--card2);transform:translateY(-2px)}
 .rel-ico{font-size:1.8rem}
 .rel-card strong{font-size:.82rem;font-weight:700}
@@ -235,38 +191,28 @@ textarea{resize:vertical;min-height:70px}
 .rel-table th{padding:8px 10px;text-align:left;background:var(--bg3);color:var(--t2);font-size:.68rem;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--b);white-space:nowrap}
 .rel-table td{padding:8px 10px;border-bottom:1px solid var(--b)}
 .rel-table tr:last-child td{border-bottom:none}
-
-/* CONFIG */
 .about-row{display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid var(--b)}
 .about-row:last-child{border-bottom:none}
 .about-row span{color:var(--t2)}
 .cfg-btns{display:flex;gap:8px;flex-wrap:wrap}
-
-/* TOAST */
 .toast{position:fixed;bottom:calc(var(--bh)+10px);left:50%;transform:translateX(-50%);background:var(--card2);color:var(--t);border:1px solid var(--b2);border-radius:99px;padding:9px 20px;font-size:.84rem;font-weight:500;white-space:nowrap;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:toastIn .25s ease;max-width:88vw;overflow:hidden;text-overflow:ellipsis}
 .toast.ok{border-color:var(--green);color:var(--green)}
 .toast.err{border-color:var(--red);color:var(--red)}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translateX(-50%)}}
-
-/* LOADING */
 .loading-ov{position:fixed;inset:0;z-index:8000;background:rgba(6,12,26,.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
 .loading-box{display:flex;flex-direction:column;align-items:center;gap:14px}
 .loader{width:40px;height:40px;border:3px solid var(--b2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-box p{font-size:.87rem;color:var(--t2)}
-
-/* CONFIRM DIALOG */
 .confirm-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
 .confirm-box{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);padding:24px 20px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .2s ease}
 .confirm-box h3{font-size:1rem;font-weight:700}
 .confirm-box p{font-size:.87rem;color:var(--t2);line-height:1.5}
 .confirm-btns{display:flex;gap:10px}
 .confirm-btns .btn{flex:1}
-
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:99px}
-
 @media(min-width:480px){.stats{grid-template-columns:repeat(4,1fr)}.rel-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:640px){.content{padding-left:20px;padding-right:20px}.mo{align-items:center;padding:20px}.modal{border-radius:var(--r);max-height:82dvh}}
 @supports(padding-bottom:env(safe-area-inset-bottom)){
@@ -297,24 +243,22 @@ textarea{resize:vertical;min-height:70px}
     <h1>FrotaControl</h1>
     <p>Controle inteligente da sua frota</p>
 
-    <!-- SELEÇÃO DE PERFIL -->
     <div id="telaEscolha" class="login-card">
       <h2 style="margin-bottom:6px">Como deseja entrar?</h2>
       <p style="font-size:.8rem;color:var(--t3);margin-bottom:4px">Selecione seu perfil de acesso</p>
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
-        <button class="btn" onclick="escolherPerfil('motorista')" style="background:linear-gradient(135deg,var(--green),var(--grn2));font-size:.97rem;padding:15px;letter-spacing:.2px">
+        <button class="btn" onclick="escolherPerfil('motorista')" style="background:linear-gradient(135deg,var(--green),var(--grn2));font-size:.97rem;padding:15px">
           👨‍✈️ &nbsp;Sou Motorista
         </button>
-        <button class="btn" onclick="escolherPerfil('supervisor')" style="background:linear-gradient(135deg,var(--purp),#7c3aed);font-size:.97rem;padding:15px;letter-spacing:.2px">
+        <button class="btn" onclick="escolherPerfil('supervisor')" style="background:linear-gradient(135deg,var(--purp),#7c3aed);font-size:.97rem;padding:15px">
           👁️ &nbsp;Sou Supervisor
         </button>
-        <button class="btn" onclick="escolherPerfil('admin')" style="background:linear-gradient(135deg,#374151,#1f2937);font-size:.97rem;padding:15px;letter-spacing:.2px;border:1px solid var(--b2)">
+        <button class="btn" onclick="escolherPerfil('admin')" style="background:linear-gradient(135deg,#374151,#1f2937);font-size:.97rem;padding:15px;border:1px solid var(--b2)">
           🔐 &nbsp;Administrador
         </button>
       </div>
     </div>
 
-    <!-- TELA ADMIN -->
     <div id="telaAdmin" class="login-card hidden">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
         <button onclick="voltarEscolha()" style="background:none;border:none;cursor:pointer;color:var(--t2);font-size:1.3rem;line-height:1;padding:0">←</button>
@@ -335,7 +279,6 @@ textarea{resize:vertical;min-height:70px}
 
 <!-- APP -->
 <div id="app" class="app hidden">
-  <!-- TOPBAR -->
   <header class="topbar">
     <div class="tb-l">
       <button class="ham" onclick="openSidebar()"><span></span><span></span><span></span></button>
@@ -347,7 +290,6 @@ textarea{resize:vertical;min-height:70px}
     <button class="ava-btn" onclick="toggleUDrop()"><div class="ava" id="avaTop">A</div></button>
   </header>
 
-  <!-- USER DROPDOWN -->
   <div id="udrop" class="udrop hidden">
     <div class="udrop-hd">
       <div class="ava" id="avaDrop">A</div>
@@ -357,7 +299,6 @@ textarea{resize:vertical;min-height:70px}
     <button class="udrop-btn red" onclick="doLogout()">🚪 Sair</button>
   </div>
 
-  <!-- SIDEBAR -->
   <div id="sbOv" class="sb-ov hidden" onclick="closeSidebar()"></div>
   <nav id="sidebar" class="sidebar hidden">
     <div class="sb-top">
@@ -381,7 +322,6 @@ textarea{resize:vertical;min-height:70px}
     <div class="sb-foot"><button class="sb-btn red" onclick="doLogout()">🚪 Sair</button></div>
   </nav>
 
-  <!-- CONTEÚDO -->
   <main class="content">
 
     <!-- DASHBOARD -->
@@ -495,21 +435,11 @@ textarea{resize:vertical;min-height:70px}
           <button class="btn sm" id="btnNovoVeic" onclick="abrirFormVeiculo()" style="width:auto">+ Adicionar</button>
         </div>
       </div>
-      <!-- BOTÃO GRANDE ADICIONAR VEÍCULO -->
       <div id="addVeicBtnWrap" style="display:none">
-        <button onclick="abrirFormVeiculo()" style="
-          width:100%;padding:16px;
-          background:linear-gradient(135deg,#4A8AFF,#2D6AE0);
-          color:#fff;border:none;border-radius:12px;
-          font-size:1rem;font-weight:700;cursor:pointer;
-          display:flex;align-items:center;justify-content:center;gap:10px;
-          box-shadow:0 4px 16px rgba(74,138,255,.3)">
-          <svg viewBox="0 0 20 20" fill="currentColor" style="width:22px;height:22px"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
-          Adicionar Novo Veículo
+        <button onclick="abrirFormVeiculo()" style="width:100%;padding:16px;background:linear-gradient(135deg,#4A8AFF,#2D6AE0);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(74,138,255,.3)">
+          ➕ Adicionar Novo Veículo
         </button>
       </div>
-
-      <!-- FORMULÁRIO VEÍCULO -->
       <div id="formVeiculo" class="form-card hidden">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <strong style="font-family:'Syne',sans-serif;font-size:.95rem" id="formVeicTit">➕ Novo Veículo</strong>
@@ -541,7 +471,6 @@ textarea{resize:vertical;min-height:70px}
           <button class="btn" onclick="salvarVeiculo()" style="flex:2">✅ Salvar Veículo</button>
         </div>
       </div>
-      <!-- FILTROS -->
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <input type="text" id="fVeicBusca" placeholder="🔍 Placa ou modelo..." oninput="filtrarVeiculos()" style="flex:1;min-width:140px"/>
         <select id="fVeicSt" onchange="filtrarVeiculos()" style="flex:1;min-width:120px">
@@ -559,21 +488,11 @@ textarea{resize:vertical;min-height:70px}
           <button class="btn sm" id="btnNovoMot" onclick="abrirFormMotorista()" style="width:auto">+ Adicionar</button>
         </div>
       </div>
-      <!-- BOTÃO GRANDE ADICIONAR - visível para admin -->
       <div id="addMotBtnWrap" style="display:none">
-        <button onclick="abrirFormMotorista()" style="
-          width:100%;padding:16px;
-          background:linear-gradient(135deg,#22C55E,#16A34A);
-          color:#fff;border:none;border-radius:12px;
-          font-size:1rem;font-weight:700;cursor:pointer;
-          display:flex;align-items:center;justify-content:center;gap:10px;
-          box-shadow:0 4px 16px rgba(34,197,94,.3)">
-          <svg viewBox="0 0 20 20" fill="currentColor" style="width:22px;height:22px"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
-          Adicionar Novo Motorista
+        <button onclick="abrirFormMotorista()" style="width:100%;padding:16px;background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(34,197,94,.3)">
+          ➕ Adicionar Novo Motorista
         </button>
       </div>
-
-      <!-- FORMULÁRIO MOTORISTA -->
       <div id="formMotorista" class="form-card hidden">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <strong style="font-family:'Syne',sans-serif;font-size:.95rem" id="formMotTit">➕ Novo Motorista</strong>
@@ -603,7 +522,6 @@ textarea{resize:vertical;min-height:70px}
           <button class="btn" onclick="salvarMotorista()" style="flex:2">✅ Salvar Motorista</button>
         </div>
       </div>
-      <!-- FILTROS -->
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <input type="text" id="fMotBusca" placeholder="🔍 Nome ou matrícula..." oninput="filtrarMotoristas()" style="flex:1;min-width:140px"/>
         <select id="fMotSt" onchange="filtrarMotoristas()" style="flex:1;min-width:110px">
@@ -630,7 +548,6 @@ textarea{resize:vertical;min-height:70px}
     <!-- CONFIGURAÇÕES -->
     <section class="sec" id="sec-configuracoes">
       <div class="ph"><h2 class="pt">⚙️ Configurações</h2></div>
-      <!-- LOGO -->
       <div class="card">
         <div class="card-hd"><h3>🏛️ Logo da organização</h3></div>
         <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
@@ -648,34 +565,32 @@ textarea{resize:vertical;min-height:70px}
           <p style="font-size:.73rem;color:var(--t3)">PNG, JPG ou SVG. Recomendado: até 300x100px.</p>
         </div>
       </div>
-      <!-- SHEETS -->
       <div class="card">
         <div class="card-hd"><h3>🔗 Google Sheets</h3></div>
         <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
           <div class="field"><label>URL do Apps Script</label>
-            <input type="url" id="cfgUrl" placeholder="https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec"/></div>
+            <input type="url" id="cfgUrl" placeholder="https://script.google.com/..."/></div>
           <div class="cfg-btns">
             <button class="btn sm" onclick="salvarConfig()" style="width:auto">💾 Salvar</button>
             <button class="btn sm sec" onclick="testarConexao()" style="width:auto">🔌 Testar</button>
+            <button class="btn sm sec" onclick="sincronizarAgora()" style="width:auto">🔄 Sincronizar</button>
           </div>
           <div id="cfgMsg" class="hidden info"></div>
         </div>
       </div>
-      <!-- SOBRE -->
       <div class="card">
         <div class="card-hd"><h3>ℹ️ Sobre</h3></div>
         <div style="padding:14px">
           <div class="about-row"><span>Versão</span><strong>1.0.0</strong></div>
           <div class="about-row"><span>Plataforma</span><strong>PWA + Google Sheets</strong></div>
           <div class="about-row"><span>Backend</span><strong>Google Apps Script</strong></div>
-          <div class="about-row"><span>Modo</span><strong id="cfgModo">Demo</strong></div>
+          <div class="about-row"><span>Modo</span><strong id="cfgModo">Conectado ao Google Sheets ✅</strong></div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- BOTTOM NAV -->
   <nav class="botnav">
     <button class="bn active" data-s="dashboard" onclick="nav('dashboard')">
       <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
@@ -704,14 +619,14 @@ textarea{resize:vertical;min-height:70px}
   </nav>
 </div>
 
-<!-- MODAL VIAGEM DETALHE -->
+<!-- MODAL VIAGEM -->
 <div id="mViagem" class="mo hidden"><div class="modal">
   <div class="mhd"><h3>Detalhes da Viagem</h3><button class="mclose" onclick="fecharModal('mViagem')">✕</button></div>
   <div class="mbd" id="mViagemBody"></div>
   <div class="mft"><button class="btn sec sm" onclick="fecharModal('mViagem')">Fechar</button></div>
 </div></div>
 
-<!-- CONFIRM DIALOG -->
+<!-- CONFIRM -->
 <div id="confirmOv" class="confirm-ov hidden">
   <div class="confirm-box">
     <h3 id="confirmTit">Confirmar</h3>
@@ -729,46 +644,41 @@ textarea{resize:vertical;min-height:70px}
 <script>
 'use strict';
 
-// ── DADOS ──────────────────────────────────────────
+// ── URL PADRÃO EMBUTIDA ────────────────────────────────────
+const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwKBvFMJdIzhQDcMlvPZMjBPbgfcG4C0C0LHplt7sAg7jEVlx2_086TZkj5AxiUxuMv/exec';
+
 const DEMO_USERS = [
   {id:'U0',nome:'Administrador',usuario:'admin',senha:btoa('admin123'),perfil:'admin'},
-  {id:'U1',nome:'João Motorista',usuario:'motorista',senha:btoa('motor123'),perfil:'motorista'},
-  {id:'U2',nome:'Maria Supervisora',usuario:'supervisor',senha:btoa('super123'),perfil:'supervisor'},
+  {id:'U1',nome:'Motorista',usuario:'motorista',senha:btoa('motor123'),perfil:'motorista'},
+  {id:'U2',nome:'Supervisor',usuario:'supervisor',senha:btoa('super123'),perfil:'supervisor'},
 ];
 
-let veiculos = JSON.parse(localStorage.getItem('fc_veiculos') || 'null') || [
-  {id:'V1',placa:'ABC-1234',marca:'Fiat',modelo:'Strada',ano:'2022',tipo:'Caminhonete',setor:'Sec. de Obras',status:'Disponível',km:'45230',consumo:'11.5'},
-  {id:'V2',placa:'DEF-5678',marca:'Ford',modelo:'Transit',ano:'2021',tipo:'Van',setor:'Sec. de Saúde',status:'Em Uso',km:'78450',consumo:'9.0'},
-  {id:'V3',placa:'GHI-9012',marca:'VW',modelo:'Gol',ano:'2020',tipo:'Carro',setor:'Sec. de Educação',status:'Disponível',km:'32100',consumo:'13.0'},
-  {id:'V4',placa:'JKL-3456',marca:'Chevrolet',modelo:'S10',ano:'2023',tipo:'Caminhonete',setor:'Sec. de Agricultura',status:'Manutenção',km:'91000',consumo:'10.5'},
-];
-
-let motoristas = JSON.parse(localStorage.getItem('fc_motoristas') || 'null') || [
-  {id:'M1',nome:'João da Silva',cpf:'123.456.789-00',telefone:'(62) 99999-1111',cnh:'12345678',categoria:'B',vencCnh:'2026-12-31',matricula:'0001',status:'Ativo'},
-  {id:'M2',nome:'Maria Souza',cpf:'987.654.321-00',telefone:'(62) 98888-2222',cnh:'87654321',categoria:'D',vencCnh:'2025-05-20',matricula:'0002',status:'Ativo'},
-  {id:'M3',nome:'Carlos Oliveira',cpf:'456.123.789-00',telefone:'(62) 97777-3333',cnh:'45678912',categoria:'C',vencCnh:'2024-03-15',matricula:'0003',status:'Ativo'},
-  {id:'M4',nome:'Ana Costa',cpf:'321.654.987-00',telefone:'(62) 96666-4444',cnh:'32165498',categoria:'B',vencCnh:'2027-08-10',matricula:'0004',status:'Ativo'},
-];
-
-let viagens = JSON.parse(localStorage.getItem('fc_viagens') || 'null') || [
-  {id:'T1',veiculoId:'V2',placa:'DEF-5678',motorista:'João da Silva',motoristaId:'M1',destino:'Hospital Municipal',motivo:'Transporte de pacientes',kmInicial:'78250',kmFinal:'',kmRodados:'',dataHoraSaida:new Date(Date.now()-3600000).toISOString(),dataHoraRetorno:'',tempoViagem:'',status:'em andamento',combustivelSaida:'3/4',combustivelRetorno:'',passageiros:'4',nomePassageiros:'Pedro, Ana, Carlos, Lúcia',geoSaida:'',geoRetorno:'',ocorrencias:'',obs:''},
-  {id:'T2',veiculoId:'V1',placa:'ABC-1234',motorista:'Maria Souza',motoristaId:'M2',destino:'Secretaria Estadual',motivo:'Reunião administrativa',kmInicial:'45000',kmFinal:'45230',kmRodados:'230',dataHoraSaida:new Date(Date.now()-86400000).toISOString(),dataHoraRetorno:new Date(Date.now()-86400000+7200000).toISOString(),tempoViagem:'2.0h',status:'concluída',combustivelSaida:'Cheio',combustivelRetorno:'3/4',passageiros:'2',nomePassageiros:'José, Rita',geoSaida:'',geoRetorno:'',ocorrencias:'Trânsito intenso',obs:''},
-];
-
+let veiculos    = JSON.parse(localStorage.getItem('fc_veiculos')   || 'null') || [];
+let motoristas  = JSON.parse(localStorage.getItem('fc_motoristas') || 'null') || [];
+let viagens     = JSON.parse(localStorage.getItem('fc_viagens')    || 'null') || [];
 let S = { user: null };
-let confirmCallback = null;
+let removerTipo = '', removerId = '';
 
-// ── BOOT ──────────────────────────────────────────
+// ── BOOT ──────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+  // Garante URL padrão no localStorage
+  if (!localStorage.getItem('fc_url')) {
+    localStorage.setItem('fc_url', DEFAULT_SHEETS_URL);
+  }
+  // Logo salva
+  const logo = localStorage.getItem('fc_logo');
+  if (logo) setTimeout(() => aplicarLogo(logo), 400);
+
   setTimeout(() => {
     document.getElementById('splash').classList.add('hidden');
     const saved = localStorage.getItem('fc_session');
-    if (saved) { try { S.user = JSON.parse(saved); iniciarApp(); } catch { showLogin(); } }
-    else showLogin();
+    if (saved) {
+      try { S.user = JSON.parse(saved); iniciarApp(); }
+      catch { showLogin(); }
+    } else {
+      showLogin();
+    }
   }, 2100);
-  // Logo salva
-  const logo = localStorage.getItem('fc_logo');
-  if (logo) setTimeout(() => aplicarLogo(logo), 500);
 });
 
 function showLogin() {
@@ -783,7 +693,7 @@ function iniciarApp() {
   ['avaTop','avaDrop'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=ini; });
   document.getElementById('udName').textContent = S.user.nome;
   document.getElementById('udRole').textContent = S.user.perfil;
-  // Permissões por perfil
+
   const isAdmin = S.user.perfil === 'admin';
   const isAdminOrSupervisor = isAdmin || S.user.perfil === 'supervisor';
   ['sbGrpGestao','sbVeiculos','sbMotoristas','sbRelatorios'].forEach(id => {
@@ -794,31 +704,29 @@ function iniciarApp() {
     const el = document.getElementById(id);
     if (el) el.style.display = isAdmin ? '' : 'none';
   });
-  // Botões de adicionar só para admin
   ['btnNovoVeic','btnNovoMot'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isAdmin ? '' : 'none';
   });
-  // Botão grande de adicionar motorista
   const addMotWrap = document.getElementById('addMotBtnWrap');
   if (addMotWrap) addMotWrap.style.display = isAdmin ? 'block' : 'none';
   const addVeicWrap = document.getElementById('addVeicBtnWrap');
   if (addVeicWrap) addVeicWrap.style.display = isAdmin ? 'block' : 'none';
-    nav('dashboard');
-  // Carrega dados da planilha em background
+
+  nav('dashboard');
+  // Sincroniza com a planilha ao entrar
   carregarDaPlanilha().then(() => loadDashboard());
 }
 
-// ── LOGIN ──────────────────────────────────────────
+// ── LOGIN ──────────────────────────────────────────────────
 function escolherPerfil(perfil) {
   if (perfil === 'admin') {
     document.getElementById('telaEscolha').classList.add('hidden');
     document.getElementById('telaAdmin').classList.remove('hidden');
     setTimeout(() => document.getElementById('loginPass').focus(), 100);
   } else {
-    // Motorista e Supervisor entram direto sem senha
     const nomes = { motorista: 'Motorista', supervisor: 'Supervisor' };
-    const usuario = { id: 'U_'+perfil, nome: nomes[perfil], usuario: perfil, perfil: perfil };
+    const usuario = { id: 'U_'+perfil, nome: nomes[perfil], usuario: perfil, perfil };
     S.user = usuario;
     localStorage.setItem('fc_session', JSON.stringify(usuario));
     iniciarApp();
@@ -835,28 +743,8 @@ function voltarEscolha() {
 function doLogin() {
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginErr');
-  if (!p) { err.textContent = 'Digite a senha.'; err.classList.remove('hidden'); return; }
-
-  const url = localStorage.getItem('fc_url') || '';
-  if (url) {
-    showLoading('Verificando credenciais...');
-    fetch(url, { method:'POST', body: JSON.stringify({ action:'login', usuario:'admin', senha:btoa(p) }), redirect:'follow' })
-      .then(r => r.json())
-      .then(d => {
-        hideLoading();
-        if (d.success) {
-          err.classList.add('hidden');
-          S.user = d.user;
-          localStorage.setItem('fc_session', JSON.stringify(d.user));
-          iniciarApp();
-        } else {
-          loginLocal(p, err);
-        }
-      })
-      .catch(() => { hideLoading(); loginLocal(p, err); });
-  } else {
-    loginLocal(p, err);
-  }
+  if (!p) { err.textContent='Digite a senha.'; err.classList.remove('hidden'); return; }
+  loginLocal(p, err);
 }
 
 function loginLocal(p, err) {
@@ -871,20 +759,22 @@ function loginLocal(p, err) {
     err.classList.remove('hidden');
   }
 }
+
 function doLogout() {
   S.user = null;
   localStorage.removeItem('fc_session');
   closeSidebar(); closeUDrop();
   document.getElementById('app').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
-  document.getElementById('loginUser').value = '';
+  document.getElementById('telaAdmin').classList.add('hidden');
+  document.getElementById('telaEscolha').classList.remove('hidden');
   document.getElementById('loginPass').value = '';
 }
 
 function togglePass() { const i=document.getElementById('loginPass'); if(i) i.type=i.type==='password'?'text':'password'; }
 
-// ── PERSISTÊNCIA ──────────────────────────────────
-const API_URL = () => localStorage.getItem('fc_url') || '';
+// ── API ────────────────────────────────────────────────────
+const API_URL = () => localStorage.getItem('fc_url') || DEFAULT_SHEETS_URL;
 
 async function apiCall(action, data = {}) {
   const url = API_URL();
@@ -898,23 +788,10 @@ async function apiCall(action, data = {}) {
   return resp.json();
 }
 
-function salvar() {
-  localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
-  localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
-  localStorage.setItem('fc_viagens', JSON.stringify(viagens));
-  // Sync para planilha em background
-  syncPlanilha();
-}
-
-async function syncPlanilha() {
-  // Sync é feito por cada operação individual
-}
-
+// ── SINCRONIZAÇÃO ──────────────────────────────────────────
 async function carregarDaPlanilha() {
-  const url = API_URL();
-  if (!url) return; // usa dados locais
   try {
-    showLoading('Carregando dados da planilha...');
+    showLoading('Sincronizando com a planilha...');
     const [rv, rm, rvg] = await Promise.all([
       apiCall('getVeiculos'),
       apiCall('getMotoristas'),
@@ -922,45 +799,48 @@ async function carregarDaPlanilha() {
     ]);
     if (rv.success && rv.data.length > 0) {
       veiculos = rv.data.map(v => ({
-        id: v.id, placa: v.placa, marca: v.marca, modelo: v.modelo,
-        ano: v.ano, tipo: v.tipo, setor: v.setor, status: v.status,
-        km: v.km, consumo: v.consumo,
+        id:v.id, placa:v.placa, marca:v.marca, modelo:v.modelo,
+        ano:v.ano, tipo:v.tipo, setor:v.setor, status:v.status,
+        km:v.km, consumo:v.consumo,
       }));
       localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
     }
     if (rm.success && rm.data.length > 0) {
       motoristas = rm.data.map(m => ({
-        id: m.id, nome: m.nome, cpf: m.cpf, telefone: m.telefone,
-        cnh: m.cnh, categoria: m.categoria, vencCnh: m.venccnh,
-        matricula: m.matricula, status: m.status,
+        id:m.id, nome:m.nome, cpf:m.cpf, telefone:m.telefone,
+        cnh:m.cnh, categoria:m.categoria, vencCnh:m.venccnh,
+        matricula:m.matricula, status:m.status,
       }));
       localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
     }
     if (rvg.success && rvg.data.length > 0) {
       viagens = rvg.data.map(v => ({
-        id: v.id, veiculoId: v.veiculoid, placa: v.placa,
-        motorista: v.motorista, motoristaId: v.motoristaid,
-        destino: v.destino, motivo: v.motivo,
-        kmInicial: v.kminicial, kmFinal: v.kmfinal, kmRodados: v.kmrodados,
-        dataHoraSaida: v.datahorasaida, dataHoraRetorno: v.datahoraretorno,
-        tempoViagem: v.tempoviagem, status: v.status,
-        combustivelSaida: v.combustivelsaida, combustivelRetorno: v.combustivelretorno,
-        passageiros: v.passageiros, nomePassageiros: v.nomepassageiros,
-        geoSaida: v.geosaida, geoRetorno: v.georetorno,
-        ocorrencias: v.ocorrencias, obs: v.observacoes,
-        usuarioRegistro: v.usuarioregistro,
+        id:v.id, veiculoId:v.veiculoid, placa:v.placa,
+        motorista:v.motorista, motoristaId:v.motoristaid,
+        destino:v.destino, motivo:v.motivo,
+        kmInicial:v.kminicial, kmFinal:v.kmfinal, kmRodados:v.kmrodados,
+        dataHoraSaida:v.datahorasaida, dataHoraRetorno:v.datahoraretorno,
+        tempoViagem:v.tempoviagem, status:v.status,
+        combustivelSaida:v.combustivelsaida, combustivelRetorno:v.combustivelretorno,
+        passageiros:v.passageiros, nomePassageiros:v.nomepassageiros,
+        geoSaida:v.geosaida, geoRetorno:v.georetorno,
+        ocorrencias:v.ocorrencias, obs:v.observacoes,
       }));
       localStorage.setItem('fc_viagens', JSON.stringify(viagens));
     }
     hideLoading();
-    toast('✅ Dados sincronizados com a planilha!', 'ok');
+    toast('✅ Sincronizado com Google Sheets!', 'ok');
   } catch(e) {
     hideLoading();
-    toast('⚠️ Usando dados locais — ' + e.message, '');
+    toast('⚠️ Usando dados locais: ' + e.message, '');
   }
 }
 
-// ── NAVEGAÇÃO ──────────────────────────────────────
+function sincronizarAgora() {
+  carregarDaPlanilha().then(() => loadDashboard());
+}
+
+// ── NAVEGAÇÃO ──────────────────────────────────────────────
 const NAV_LABELS = {dashboard:'Dashboard',saida:'Registrar Saída',retorno:'Registrar Retorno',viagens:'Histórico',veiculos:'Veículos',motoristas:'Motoristas',relatorios:'Relatórios',configuracoes:'Configurações'};
 const NAV_LOADERS = {dashboard:loadDashboard,saida:loadFormSaida,retorno:loadFormRetorno,viagens:loadViagens,veiculos:loadVeiculos,motoristas:loadMotoristas,configuracoes:loadConfig};
 
@@ -975,17 +855,8 @@ function nav(s) {
   if (NAV_LOADERS[s]) NAV_LOADERS[s]();
 }
 
-// ── SIDEBAR / USER MENU ──────────────────────────
-function openSidebar() {
-  document.getElementById('sidebar').classList.remove('hidden');
-  document.getElementById('sbOv').classList.remove('hidden');
-  document.body.style.overflow='hidden';
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.add('hidden');
-  document.getElementById('sbOv').classList.add('hidden');
-  document.body.style.overflow='';
-}
+function openSidebar() { document.getElementById('sidebar').classList.remove('hidden'); document.getElementById('sbOv').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+function closeSidebar() { document.getElementById('sidebar').classList.add('hidden'); document.getElementById('sbOv').classList.add('hidden'); document.body.style.overflow=''; }
 function toggleUDrop() { document.getElementById('udrop').classList.toggle('hidden'); }
 function closeUDrop() { document.getElementById('udrop').classList.add('hidden'); }
 document.addEventListener('click', e => {
@@ -993,7 +864,7 @@ document.addEventListener('click', e => {
   if(d&&b&&!d.contains(e.target)&&!b.contains(e.target)) d.classList.add('hidden');
 });
 
-// ── DASHBOARD ──────────────────────────────────────
+// ── DASHBOARD ──────────────────────────────────────────────
 function loadDashboard() {
   const hoje = new Date().toDateString();
   document.getElementById('dashDate').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
@@ -1021,7 +892,7 @@ function loadDashboard() {
     : '<div class="empty"><span>✅</span><p>Sem alertas no momento</p></div>';
 }
 
-// ── SAÍDA ──────────────────────────────────────────
+// ── SAÍDA ──────────────────────────────────────────────────
 function loadFormSaida() {
   const sv = document.getElementById('sVeiculo');
   sv.innerHTML = '<option value="">— Selecione o veículo —</option>' + veiculos.filter(v=>v.status==='Disponível').map(v=>`<option value="${v.id}">${v.placa} — ${v.marca} ${v.modelo}</option>`).join('');
@@ -1032,11 +903,8 @@ function loadFormSaida() {
   document.getElementById('sHora').value = toTI(now);
   document.getElementById('veicPrev').classList.add('hidden');
   document.getElementById('saidaErr').classList.add('hidden');
-  if (S.user.perfil==='motorista') {
-    const mf = motoristas.find(m=>m.nome.toLowerCase().includes(S.user.nome.split(' ')[0].toLowerCase()));
-    if (mf) sm.value = mf.id;
-  }
 }
+
 function onVeiculoSel() {
   const id=document.getElementById('sVeiculo').value;
   const p=document.getElementById('veicPrev');
@@ -1048,6 +916,7 @@ function onVeiculoSel() {
   document.getElementById('sKmIni').value=v.km;
   p.classList.remove('hidden');
 }
+
 function registrarSaida() {
   const vId=document.getElementById('sVeiculo').value, mId=document.getElementById('sMotorista').value;
   const kmI=document.getElementById('sKmIni').value, dest=document.getElementById('sDestino').value.trim();
@@ -1058,25 +927,19 @@ function registrarSaida() {
   if(parseFloat(kmI)<parseFloat(veiculo.km)){err.textContent=`KM inicial menor que KM atual do veículo (${veiculo.km}).`;err.classList.remove('hidden');return;}
   err.classList.add('hidden');
   showLoading('Registrando saída...');
-  setTimeout(()=>{
-    const viagem={id:'T'+Date.now(),veiculoId:vId,placa:veiculo.placa,motorista:motorista.nome,motoristaId:mId,destino:dest,motivo:mot,kmInicial:kmI,kmFinal:'',kmRodados:'',dataHoraSaida:`${data}T${hora}:00`,dataHoraRetorno:'',tempoViagem:'',status:'em andamento',combustivelSaida:document.getElementById('sComb').value,combustivelRetorno:'',passageiros:document.getElementById('sPassNum').value||'0',nomePassageiros:document.getElementById('sPassNomes').value,geoSaida:document.getElementById('sGeo').value,geoRetorno:'',ocorrencias:'',obs:document.getElementById('sObs').value};
-    viagens.unshift(viagem); veiculo.status='Em Uso'; veiculo.km=kmI;
-    localStorage.setItem('fc_viagens', JSON.stringify(viagens));
-    localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
-    // Salva na planilha
-    const url = API_URL();
-    if (url) {
-      apiCall('registrarSaida', { viagem })
-        .catch(e => console.warn('Erro ao salvar na planilha:', e.message));
-    }
-    hideLoading(); toast('✅ Saída registrada com sucesso!','ok');
-    ['sVeiculo','sMotorista','sKmIni','sDestino','sMotivo','sPassNum','sPassNomes','sGeo','sObs'].forEach(id=>{document.getElementById(id).value='';});
-    document.getElementById('veicPrev').classList.add('hidden');
-    nav('dashboard');
-  }, 600);
+  const viagem={id:'T'+Date.now(),veiculoId:vId,placa:veiculo.placa,motorista:motorista.nome,motoristaId:mId,destino:dest,motivo:mot,kmInicial:kmI,kmFinal:'',kmRodados:'',dataHoraSaida:`${data}T${hora}:00`,dataHoraRetorno:'',tempoViagem:'',status:'em andamento',combustivelSaida:document.getElementById('sComb').value,combustivelRetorno:'',passageiros:document.getElementById('sPassNum').value||'0',nomePassageiros:document.getElementById('sPassNomes').value,geoSaida:document.getElementById('sGeo').value,geoRetorno:'',ocorrencias:'',obs:document.getElementById('sObs').value};
+  viagens.unshift(viagem); veiculo.status='Em Uso'; veiculo.km=kmI;
+  localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+  localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+  apiCall('registrarSaida', { viagem })
+    .then(() => { hideLoading(); toast('✅ Saída registrada na planilha!','ok'); })
+    .catch(e => { hideLoading(); toast('⚠️ Salvo localmente: '+e.message,''); });
+  ['sVeiculo','sMotorista','sKmIni','sDestino','sMotivo','sPassNum','sPassNomes','sGeo','sObs'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('veicPrev').classList.add('hidden');
+  nav('dashboard');
 }
 
-// ── RETORNO ──────────────────────────────────────
+// ── RETORNO ────────────────────────────────────────────────
 function loadFormRetorno() {
   const ativas=viagens.filter(v=>v.status==='em andamento');
   document.getElementById('rViagem').innerHTML='<option value="">— Selecione a viagem —</option>'+ativas.map(v=>`<option value="${v.id}">${v.placa} — ${v.motorista} → ${v.destino}</option>`).join('');
@@ -1085,6 +948,7 @@ function loadFormRetorno() {
   document.getElementById('viagemPrev').classList.add('hidden'); document.getElementById('kmBox').classList.add('hidden');
   document.getElementById('retornoErr').classList.add('hidden');
 }
+
 function onViagemSel() {
   const id=document.getElementById('rViagem').value;
   const p=document.getElementById('viagemPrev');
@@ -1098,6 +962,7 @@ function onViagemSel() {
   p.classList.remove('hidden');
   document.getElementById('rKmFinal').value=''; document.getElementById('kmBox').classList.add('hidden');
 }
+
 function calcKm() {
   const id=document.getElementById('rViagem').value, kmF=parseFloat(document.getElementById('rKmFinal').value);
   if(!id||isNaN(kmF))return;
@@ -1105,6 +970,7 @@ function calcKm() {
   const rod=kmF-parseFloat(v.kmInicial);
   if(rod>=0){document.getElementById('kmVal').textContent=fmtN(rod.toFixed(0))+' km';document.getElementById('kmBox').classList.remove('hidden');}
 }
+
 function registrarRetorno() {
   const vId=document.getElementById('rViagem').value, kmF=document.getElementById('rKmFinal').value;
   const data=document.getElementById('rData').value, hora=document.getElementById('rHora').value;
@@ -1116,29 +982,20 @@ function registrarRetorno() {
   const rod=parseFloat(kmF)-parseFloat(viagem.kmInicial), dtRet=`${data}T${hora}:00`;
   const tempoH=((new Date(dtRet)-new Date(viagem.dataHoraSaida))/3600000).toFixed(1);
   showLoading('Registrando retorno...');
-  setTimeout(()=>{
-    const idx=viagens.findIndex(v=>v.id===vId);
-    if(idx!==-1) viagens[idx]={...viagens[idx],kmFinal:kmF,kmRodados:rod.toFixed(0),dataHoraRetorno:dtRet,tempoViagem:tempoH+'h',status:'concluída',combustivelRetorno:document.getElementById('rComb').value,geoRetorno:document.getElementById('rGeo').value,ocorrencias:document.getElementById('rOcorr').value};
-    const vc=veiculos.find(v=>v.id===viagem.veiculoId);
-    if(vc){vc.status='Disponível';vc.km=kmF;}
-    localStorage.setItem('fc_viagens', JSON.stringify(viagens));
-    localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
-    // Salva na planilha
-    const urlR = API_URL();
-    if (urlR) {
-      apiCall('registrarRetorno', { retorno: {
-        viagemId: vId, kmFinal: kmF, kmRodados: rod.toFixed(0),
-        dataHoraRetorno: dtRet, tempoViagem: tempoH+'h',
-        combustivelRetorno: document.getElementById('rComb').value,
-        geoRetorno: document.getElementById('rGeo').value,
-        ocorrencias: document.getElementById('rOcorr').value,
-      }}).catch(e => console.warn('Erro retorno planilha:', e.message));
-    }
-    hideLoading(); toast(`✅ ${fmtN(rod.toFixed(0))} km registrados!`,'ok'); nav('dashboard');
-  }, 600);
+  const idx=viagens.findIndex(v=>v.id===vId);
+  if(idx!==-1) viagens[idx]={...viagens[idx],kmFinal:kmF,kmRodados:rod.toFixed(0),dataHoraRetorno:dtRet,tempoViagem:tempoH+'h',status:'concluída',combustivelRetorno:document.getElementById('rComb').value,geoRetorno:document.getElementById('rGeo').value,ocorrencias:document.getElementById('rOcorr').value};
+  const vc=veiculos.find(v=>v.id===viagem.veiculoId);
+  if(vc){vc.status='Disponível';vc.km=kmF;}
+  localStorage.setItem('fc_viagens', JSON.stringify(viagens));
+  localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
+  const retorno = { viagemId:vId, kmFinal:kmF, kmRodados:rod.toFixed(0), dataHoraRetorno:dtRet, tempoViagem:tempoH+'h', combustivelRetorno:document.getElementById('rComb').value, geoRetorno:document.getElementById('rGeo').value, ocorrencias:document.getElementById('rOcorr').value };
+  apiCall('registrarRetorno', { retorno })
+    .then(() => { hideLoading(); toast(`✅ ${fmtN(rod.toFixed(0))} km registrados na planilha!`,'ok'); })
+    .catch(e => { hideLoading(); toast('⚠️ Salvo localmente: '+e.message,''); });
+  nav('dashboard');
 }
 
-// ── VIAGENS ──────────────────────────────────────
+// ── VIAGENS ────────────────────────────────────────────────
 function loadViagens(){renderViagens([...viagens].sort((a,b)=>new Date(b.dataHoraSaida)-new Date(a.dataHoraSaida)));}
 function filtrarViagens(){
   const q=document.getElementById('fVBusca').value.toLowerCase(),de=document.getElementById('fVDe').value,at=document.getElementById('fVAte').value,st=document.getElementById('fVSt').value;
@@ -1197,7 +1054,7 @@ function verViagem(id){
   abrirModal('mViagem');
 }
 
-// ── VEÍCULOS ──────────────────────────────────────
+// ── VEÍCULOS ───────────────────────────────────────────────
 function loadVeiculos() { fecharFormVeiculo(); filtrarVeiculos(); }
 function filtrarVeiculos(){
   const q=document.getElementById('fVeicBusca').value.toLowerCase(), st=document.getElementById('fVeicSt').value;
@@ -1225,7 +1082,6 @@ function renderVeiculos(list){
       </div>
     </div>`).join('');
 }
-
 function abrirFormVeiculo() {
   document.getElementById('fvId').value='';
   document.getElementById('formVeicTit').textContent='➕ Novo Veículo';
@@ -1237,10 +1093,7 @@ function abrirFormVeiculo() {
   f.classList.remove('hidden'); f.style.display='flex';
   f.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-function fecharFormVeiculo() {
-  const f=document.getElementById('formVeiculo');
-  f.classList.add('hidden'); f.style.display='none';
-}
+function fecharFormVeiculo() { const f=document.getElementById('formVeiculo'); f.classList.add('hidden'); f.style.display='none'; }
 function editarVeiculo(id) {
   const v=veiculos.find(x=>x.id===id);if(!v)return;
   document.getElementById('fvId').value=v.id;
@@ -1265,7 +1118,7 @@ function salvarVeiculo() {
   const marca=document.getElementById('fvMarca').value.trim();
   const ano=document.getElementById('fvAno').value;
   const err=document.getElementById('fvErr');
-  if(!placa||!modelo||!marca||!ano){err.textContent='Preencha os campos obrigatórios (Placa, Marca, Modelo, Ano).';err.classList.remove('hidden');return;}
+  if(!placa||!modelo||!marca||!ano){err.textContent='Preencha Placa, Marca, Modelo e Ano.';err.classList.remove('hidden');return;}
   err.classList.add('hidden');
   const id=document.getElementById('fvId').value||'V'+Date.now();
   const v={id,placa,modelo,marca,ano,tipo:document.getElementById('fvTipo').value,status:document.getElementById('fvStatus').value,km:document.getElementById('fvKm').value||'0',consumo:document.getElementById('fvConsumo').value||'0',setor:document.getElementById('fvSetor').value};
@@ -1273,20 +1126,14 @@ function salvarVeiculo() {
   if(idx!==-1) veiculos[idx]=v; else veiculos.push(v);
   localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
   fecharFormVeiculo();
-  // Salva na planilha
-  const url = API_URL();
-  if (url) {
-    showLoading('Salvando veículo...');
-    apiCall('salvarVeiculo', { veiculo: v })
-      .then(() => { hideLoading(); toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok'); })
-      .catch(e => { hideLoading(); toast('⚠️ Salvo localmente. Erro planilha: '+e.message,''); });
-  } else {
-    toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok');
-  }
+  showLoading('Salvando na planilha...');
+  apiCall('salvarVeiculo', { veiculo: v })
+    .then(() => { hideLoading(); toast(idx!==-1?'✅ Veículo atualizado!':'✅ Veículo cadastrado!','ok'); })
+    .catch(e => { hideLoading(); toast('⚠️ Salvo localmente: '+e.message,''); });
   filtrarVeiculos();
 }
 
-// ── MOTORISTAS ──────────────────────────────────
+// ── MOTORISTAS ─────────────────────────────────────────────
 function loadMotoristas() { fecharFormMotorista(); filtrarMotoristas(); }
 function filtrarMotoristas(){
   const q=document.getElementById('fMotBusca').value.toLowerCase(), st=document.getElementById('fMotSt').value;
@@ -1316,7 +1163,6 @@ function renderMotoristas(list){
     </div>`;
   }).join('');
 }
-
 function abrirFormMotorista() {
   document.getElementById('fmId').value='';
   document.getElementById('formMotTit').textContent='➕ Novo Motorista';
@@ -1328,10 +1174,7 @@ function abrirFormMotorista() {
   f.classList.remove('hidden'); f.style.display='flex';
   f.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-function fecharFormMotorista() {
-  const f=document.getElementById('formMotorista');
-  f.classList.add('hidden'); f.style.display='none';
-}
+function fecharFormMotorista() { const f=document.getElementById('formMotorista'); f.classList.add('hidden'); f.style.display='none'; }
 function editarMotorista(id) {
   const m=motoristas.find(x=>x.id===id);if(!m)return;
   document.getElementById('fmId').value=m.id;
@@ -1352,7 +1195,7 @@ function editarMotorista(id) {
 function salvarMotorista() {
   const nome=document.getElementById('fmNome').value.trim();
   const err=document.getElementById('fmErr');
-  if(!nome){err.textContent='O nome do motorista é obrigatório.';err.classList.remove('hidden');return;}
+  if(!nome){err.textContent='O nome é obrigatório.';err.classList.remove('hidden');return;}
   err.classList.add('hidden');
   const id=document.getElementById('fmId').value||'M'+Date.now();
   const m={id,nome,cpf:document.getElementById('fmCpf').value,telefone:document.getElementById('fmTel').value,cnh:document.getElementById('fmCnh').value,categoria:document.getElementById('fmCat').value,vencCnh:document.getElementById('fmVenc').value,matricula:document.getElementById('fmMat').value,status:document.getElementById('fmSt').value};
@@ -1360,21 +1203,14 @@ function salvarMotorista() {
   if(idx!==-1) motoristas[idx]=m; else motoristas.push(m);
   localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
   fecharFormMotorista();
-  // Salva na planilha
-  const url = API_URL();
-  if (url) {
-    showLoading('Salvando motorista...');
-    apiCall('salvarMotorista', { motorista: m })
-      .then(() => { hideLoading(); toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok'); })
-      .catch(e => { hideLoading(); toast('⚠️ Salvo localmente. Erro planilha: '+e.message,''); });
-  } else {
-    toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok');
-  }
+  showLoading('Salvando na planilha...');
+  apiCall('salvarMotorista', { motorista: m })
+    .then(() => { hideLoading(); toast(idx!==-1?'✅ Motorista atualizado!':'✅ Motorista cadastrado!','ok'); })
+    .catch(e => { hideLoading(); toast('⚠️ Salvo localmente: '+e.message,''); });
   filtrarMotoristas();
 }
 
-// ── REMOVER (COM CONFIRMAÇÃO) ──────────────────
-let removerTipo='', removerId='';
+// ── REMOVER ────────────────────────────────────────────────
 function confirmarRemover(tipo, id, nome) {
   removerTipo=tipo; removerId=id;
   document.getElementById('confirmTit').textContent = tipo==='veiculo'?'Remover Veículo':'Remover Motorista';
@@ -1385,22 +1221,22 @@ function fecharConfirm() { document.getElementById('confirmOv').classList.add('h
 function confirmarAcao() {
   if(removerTipo==='veiculo') {
     const v=veiculos.find(x=>x.id===removerId);
-    if(v&&v.status==='Em Uso'){fecharConfirm();toast('⚠️ Não é possível remover um veículo em uso.','err');return;}
+    if(v&&v.status==='Em Uso'){fecharConfirm();toast('⚠️ Não é possível remover veículo em uso.','err');return;}
     veiculos=veiculos.filter(x=>x.id!==removerId);
     localStorage.setItem('fc_veiculos', JSON.stringify(veiculos));
-    if (API_URL()) apiCall('removerVeiculo', { id: removerId }).catch(()=>{});
+    apiCall('removerVeiculo', { id: removerId }).catch(()=>{});
     fecharConfirm(); toast('🗑️ Veículo removido.',''); filtrarVeiculos();
   } else if(removerTipo==='motorista') {
     const emViagem=viagens.some(v=>v.motoristaId===removerId&&v.status==='em andamento');
-    if(emViagem){fecharConfirm();toast('⚠️ Motorista está em viagem, não pode ser removido.','err');return;}
+    if(emViagem){fecharConfirm();toast('⚠️ Motorista em viagem, não pode ser removido.','err');return;}
     motoristas=motoristas.filter(x=>x.id!==removerId);
     localStorage.setItem('fc_motoristas', JSON.stringify(motoristas));
-    if (API_URL()) apiCall('removerMotorista', { id: removerId }).catch(()=>{});
+    apiCall('removerMotorista', { id: removerId }).catch(()=>{});
     fecharConfirm(); toast('🗑️ Motorista removido.',''); filtrarMotoristas();
   }
 }
 
-// ── RELATÓRIOS ────────────────────────────────
+// ── RELATÓRIOS ─────────────────────────────────────────────
 function gerarRel(tipo) {
   const tits={periodo:'Por Período',veiculo:'Por Veículo',motorista:'Por Motorista',consumo:'Combustível',frota:'Frota Geral',km:'Quilometragem'};
   let rows=[],cols=[];
@@ -1427,20 +1263,17 @@ function gerarRel(tipo) {
   out.scrollIntoView({behavior:'smooth'});
 }
 
-// ── CONFIGURAÇÕES ──────────────────────────────
+// ── CONFIGURAÇÕES ──────────────────────────────────────────
 function loadConfig() {
-  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url') || 'https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec';
-  if (!localStorage.getItem('fc_url')) localStorage.setItem('fc_url', 'https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec');
-  document.getElementById('cfgModo').textContent = localStorage.getItem('fc_url') ? 'Conectado ao Google Sheets ✅' : 'Demo (dados locais)';
+  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url') || DEFAULT_SHEETS_URL;
+  document.getElementById('cfgModo').textContent = 'Conectado ao Google Sheets ✅';
 }
 function salvarConfig() {
   const url=document.getElementById('cfgUrl').value.trim();
-  localStorage.setItem('fc_url',url);
-  document.getElementById('cfgModo').textContent=url?'Conectado ao Google Sheets':'Demo (dados locais)';
+  localStorage.setItem('fc_url', url || DEFAULT_SHEETS_URL);
   toast('✅ URL salva!','ok');
 }
 function testarConexao() {
-  if(!API_URL()){toast('⚠️ Configure a URL primeiro','err');return;}
   showLoading('Testando conexão...');
   apiCall('ping')
     .then(d=>{
@@ -1448,8 +1281,6 @@ function testarConexao() {
       const m=document.getElementById('cfgMsg');
       m.className='info'; m.textContent='✅ '+d.message;
       m.classList.remove('hidden');
-      // Carrega dados ao conectar
-      carregarDaPlanilha().then(()=>loadDashboard());
     })
     .catch(e=>{
       hideLoading();
@@ -1459,7 +1290,7 @@ function testarConexao() {
     });
 }
 
-// ── LOGO ───────────────────────────────────────
+// ── LOGO ───────────────────────────────────────────────────
 function carregarLogo(input) {
   if(!input.files||!input.files[0])return;
   if(input.files[0].size>2*1024*1024){toast('⚠️ Imagem muito grande. Use até 2MB.','err');return;}
@@ -1469,7 +1300,7 @@ function carregarLogo(input) {
 }
 function aplicarLogo(src) {
   if(!src)return;
-  ['tbLogo'].forEach(id=>{const el=document.getElementById(id);if(el){el.src=src;el.style.display='block';}});
+  const tb=document.getElementById('tbLogo');if(tb){tb.src=src;tb.style.display='block';}
   const sb=document.getElementById('sbLogo');if(sb){sb.src=src;sb.style.display='block';}
   const sbIco=document.getElementById('sbIco');if(sbIco)sbIco.style.display='none';
   const pi=document.getElementById('logoPreviewImg');if(pi){pi.src=src;pi.style.display='block';}
@@ -1488,9 +1319,9 @@ function removerLogo() {
   toast('🗑️ Logo removida.','');
 }
 
-// ── GPS ─────────────────────────────────────────
+// ── GPS ─────────────────────────────────────────────────────
 function capGPS(tipo) {
-  if(!navigator.geolocation){toast('GPS não disponível neste dispositivo','err');return;}
+  if(!navigator.geolocation){toast('GPS não disponível','err');return;}
   toast('📍 Obtendo localização...','');
   navigator.geolocation.getCurrentPosition(
     pos=>{const c=`${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;document.getElementById(tipo==='saida'?'sGeo':'rGeo').value=c;toast('📍 Localização capturada!','ok');},
@@ -1498,27 +1329,24 @@ function capGPS(tipo) {
   );
 }
 
-// ── MODAIS ──────────────────────────────────────
+// ── MODAIS ──────────────────────────────────────────────────
 function abrirModal(id){document.getElementById(id).classList.remove('hidden');document.body.style.overflow='hidden';}
 function fecharModal(id){document.getElementById(id).classList.add('hidden');document.body.style.overflow='';}
 document.addEventListener('click',e=>{if(e.target.classList.contains('mo'))fecharModal(e.target.id);});
 
-// ── UI HELPERS ──────────────────────────────────
+// ── UI HELPERS ──────────────────────────────────────────────
 function showLoading(msg='Carregando...'){document.getElementById('loadingTxt').textContent=msg;document.getElementById('loadingOv').classList.remove('hidden');}
 function hideLoading(){document.getElementById('loadingOv').classList.add('hidden');}
 let _tt;
-function toast(msg,type=''){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type?' '+type:'');t.classList.remove('hidden');_tt=setTimeout(()=>t.classList.add('hidden'),3000);}
+function toast(msg,type=''){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type?' '+type:'');t.classList.remove('hidden');_tt=setTimeout(()=>t.classList.add('hidden'),3500);}
 
-// ── FORMATADORES ────────────────────────────────
+// ── FORMATADORES ─────────────────────────────────────────────
 function fmtDate(iso){try{return new Date(iso.includes('T')?iso:iso+'T12:00:00').toLocaleDateString('pt-BR');}catch{return iso||'--';}}
 function fmtTime(iso){try{return new Date(iso).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}catch{return '--';}}
 function fmtDT(iso){try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return iso||'--';}}
 function fmtN(n){try{return parseFloat(n).toLocaleString('pt-BR');}catch{return n||'0';}}
 function toDI(d){return d.toISOString().split('T')[0];}
 function toTI(d){return d.toTimeString().slice(0,5);}
-
-// Logo ao carregar
-window.addEventListener('DOMContentLoaded',()=>{const l=localStorage.getItem('fc_logo');if(l)setTimeout(()=>aplicarLogo(l),400);});
 </script>
 </body>
 </html>
