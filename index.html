@@ -296,24 +296,39 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <h1>FrotaControl</h1>
     <p>Controle inteligente da sua frota</p>
-    <div class="login-card">
-      <h2>Acesse sua conta</h2>
-      <div class="field"><label>Usuário</label>
-        <div class="inp-ico">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z"/></svg>
-          <input type="text" id="loginUser" placeholder="Seu usuário"/>
-        </div>
+
+    <!-- SELEÇÃO DE PERFIL -->
+    <div id="telaEscolha" class="login-card">
+      <h2 style="margin-bottom:6px">Como deseja entrar?</h2>
+      <p style="font-size:.8rem;color:var(--t3);margin-bottom:4px">Selecione seu perfil de acesso</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+        <button class="btn" onclick="escolherPerfil('motorista')" style="background:linear-gradient(135deg,var(--green),var(--grn2));font-size:.97rem;padding:15px;letter-spacing:.2px">
+          👨‍✈️ &nbsp;Sou Motorista
+        </button>
+        <button class="btn" onclick="escolherPerfil('supervisor')" style="background:linear-gradient(135deg,var(--purp),#7c3aed);font-size:.97rem;padding:15px;letter-spacing:.2px">
+          👁️ &nbsp;Sou Supervisor
+        </button>
+        <button class="btn" onclick="escolherPerfil('admin')" style="background:linear-gradient(135deg,#374151,#1f2937);font-size:.97rem;padding:15px;letter-spacing:.2px;border:1px solid var(--b2)">
+          🔐 &nbsp;Administrador
+        </button>
+      </div>
+    </div>
+
+    <!-- TELA ADMIN -->
+    <div id="telaAdmin" class="login-card hidden">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <button onclick="voltarEscolha()" style="background:none;border:none;cursor:pointer;color:var(--t2);font-size:1.3rem;line-height:1;padding:0">←</button>
+        <h2>🔐 Acesso Administrador</h2>
       </div>
       <div class="field"><label>Senha</label>
         <div class="inp-ico">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a4 4 0 00-4 4v1H5a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V6a4 4 0 00-4-4zm1 11.586V15a1 1 0 11-2 0v-1.414A2 2 0 1111 13.586z"/></svg>
-          <input type="password" id="loginPass" placeholder="Sua senha"/>
+          <input type="password" id="loginPass" placeholder="Senha do administrador" onkeydown="if(event.key==='Enter')doLogin()"/>
           <button type="button" class="eye" onclick="togglePass()">👁</button>
         </div>
       </div>
       <div id="loginErr" class="err hidden"></div>
-      <button class="btn" onclick="doLogin()">Entrar no sistema</button>
-
+      <button class="btn" onclick="doLogin()">Entrar</button>
     </div>
   </div>
 </div>
@@ -610,7 +625,7 @@ textarea{resize:vertical;min-height:70px}
         <div class="card-hd"><h3>🔗 Google Sheets</h3></div>
         <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
           <div class="field"><label>URL do Apps Script</label>
-            <input type="url" id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec"/></div>
+            <input type="url" id="cfgUrl" placeholder="https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec"/></div>
           <div class="cfg-btns">
             <button class="btn sm" onclick="salvarConfig()" style="width:auto">💾 Salvar</button>
             <button class="btn sm sec" onclick="testarConexao()" style="width:auto">🔌 Testar</button>
@@ -762,16 +777,37 @@ function iniciarApp() {
 }
 
 // ── LOGIN ──────────────────────────────────────────
+function escolherPerfil(perfil) {
+  if (perfil === 'admin') {
+    document.getElementById('telaEscolha').classList.add('hidden');
+    document.getElementById('telaAdmin').classList.remove('hidden');
+    setTimeout(() => document.getElementById('loginPass').focus(), 100);
+  } else {
+    // Motorista e Supervisor entram direto sem senha
+    const nomes = { motorista: 'Motorista', supervisor: 'Supervisor' };
+    const usuario = { id: 'U_'+perfil, nome: nomes[perfil], usuario: perfil, perfil: perfil };
+    S.user = usuario;
+    localStorage.setItem('fc_session', JSON.stringify(usuario));
+    iniciarApp();
+  }
+}
+
+function voltarEscolha() {
+  document.getElementById('telaAdmin').classList.add('hidden');
+  document.getElementById('telaEscolha').classList.remove('hidden');
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').classList.add('hidden');
+}
+
 function doLogin() {
-  const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginErr');
-  if (!u || !p) { err.textContent = 'Preencha usuário e senha.'; err.classList.remove('hidden'); return; }
-  // Tenta login na planilha primeiro
+  if (!p) { err.textContent = 'Digite a senha.'; err.classList.remove('hidden'); return; }
+
   const url = localStorage.getItem('fc_url') || '';
   if (url) {
     showLoading('Verificando credenciais...');
-    fetch(url, { method:'POST', body: JSON.stringify({ action:'login', usuario:u, senha:btoa(p) }), redirect:'follow' })
+    fetch(url, { method:'POST', body: JSON.stringify({ action:'login', usuario:'admin', senha:btoa(p) }), redirect:'follow' })
       .then(r => r.json())
       .then(d => {
         hideLoading();
@@ -781,25 +817,24 @@ function doLogin() {
           localStorage.setItem('fc_session', JSON.stringify(d.user));
           iniciarApp();
         } else {
-          // Fallback local
-          loginLocal(u, p, err);
+          loginLocal(p, err);
         }
       })
-      .catch(() => { hideLoading(); loginLocal(u, p, err); });
+      .catch(() => { hideLoading(); loginLocal(p, err); });
   } else {
-    loginLocal(u, p, err);
+    loginLocal(p, err);
   }
 }
 
-function loginLocal(u, p, err) {
-  const found = DEMO_USERS.find(x => x.usuario === u && x.senha === btoa(p));
+function loginLocal(p, err) {
+  const found = DEMO_USERS.find(x => x.usuario === 'admin' && x.senha === btoa(p));
   if (found) {
     err.classList.add('hidden');
     S.user = found;
     localStorage.setItem('fc_session', JSON.stringify(found));
     iniciarApp();
   } else {
-    err.textContent = '❌ Usuário ou senha incorretos.';
+    err.textContent = '❌ Senha incorreta.';
     err.classList.remove('hidden');
   }
 }
@@ -813,7 +848,7 @@ function doLogout() {
   document.getElementById('loginPass').value = '';
 }
 
-function togglePass() { const i=document.getElementById('loginPass'); i.type=i.type==='password'?'text':'password'; }
+function togglePass() { const i=document.getElementById('loginPass'); if(i) i.type=i.type==='password'?'text':'password'; }
 
 // ── PERSISTÊNCIA ──────────────────────────────────
 const API_URL = () => localStorage.getItem('fc_url') || '';
@@ -1361,8 +1396,8 @@ function gerarRel(tipo) {
 
 // ── CONFIGURAÇÕES ──────────────────────────────
 function loadConfig() {
-  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url') || 'https://script.google.com/macros/s/AKfycbz7zD5rXSnZnZufzGbfWHa9FvC_uZPPWBqQMzh7k_LyiQBhpbZqk_1mPMyMjf71K1Ba/exec';
-  if (!localStorage.getItem('fc_url')) localStorage.setItem('fc_url', 'https://script.google.com/macros/s/AKfycbz7zD5rXSnZnZufzGbfWHa9FvC_uZPPWBqQMzh7k_LyiQBhpbZqk_1mPMyMjf71K1Ba/exec');
+  document.getElementById('cfgUrl').value = localStorage.getItem('fc_url') || 'https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec';
+  if (!localStorage.getItem('fc_url')) localStorage.setItem('fc_url', 'https://script.google.com/macros/s/AKfycbxYyg5XfGCNoaSMPxNEMIPVOTAweJIIjm7Pd4wHKhTYO64hKuEBBZ-j-BwuGzwtzPpm/exec');
   document.getElementById('cfgModo').textContent = localStorage.getItem('fc_url') ? 'Conectado ao Google Sheets ✅' : 'Demo (dados locais)';
 }
 function salvarConfig() {
