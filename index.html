@@ -383,7 +383,14 @@ textarea{resize:vertical;min-height:70px}
       <div class="ph"><h2 class="pt">🚀 Registrar Saída</h2></div>
       <div class="form-card">
         <div class="field"><label>Veículo <span class="req">*</span></label>
-          <select id="sVeiculo" onchange="onVeiculoSel()"><option value="">— Selecione o veículo —</option></select></div>
+          <div style="position:relative" id="veicDropWrap">
+            <input type="text" id="sVeicBusca" placeholder="🔍 Placa ou modelo..." autocomplete="off"
+              oninput="filtrarVeicSelect()" onfocus="abrirVeicDrop()" onkeydown="navVeicDrop(event)"
+              style="cursor:pointer"/>
+            <input type="hidden" id="sVeiculo"/>
+            <div id="veicDropList" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:300;background:var(--bg2);border:1.5px solid var(--blue);border-radius:var(--r2);max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.5)"></div>
+          </div>
+        </div>
         <div id="veicPrev" class="prev-card hidden">
           <div class="prow"><span class="pk">Modelo</span><span id="pvModelo"></span></div>
           <div class="prow"><span class="pk">KM Atual</span><span id="pvKm"></span></div>
@@ -945,9 +952,12 @@ function loadDashboard(){
 }
 
 // ── SAÍDA ──────────────────────────────────────────────────
+let _veicDropIdx = -1;
+
 function loadFormSaida(){
-  const sv=document.getElementById('sVeiculo');
-  sv.innerHTML='<option value="">— Selecione o veículo —</option>'+veiculos.filter(v=>v.status==='Disponível').map(v=>`<option value="${v.id}">${v.placa} — ${v.marca} ${v.modelo}</option>`).join('');
+  document.getElementById('sVeiculo').value = '';
+  document.getElementById('sVeicBusca').value = '';
+  fecharVeicDrop();
   const sm=document.getElementById('sMotorista');
   sm.innerHTML='<option value="">— Selecione o motorista —</option>'+motoristas.filter(m=>m.status==='Ativo').map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
   const now=new Date();
@@ -955,12 +965,72 @@ function loadFormSaida(){
   document.getElementById('sHora').value=toTI(now);
   document.getElementById('veicPrev').classList.add('hidden');
   document.getElementById('saidaErr').classList.add('hidden');
-  // Auto-selecionar motorista logado
   if(S.user.perfil==='motorista'){
     sm.value=S.user.motoristaId||'';
     sm.disabled=true;
   } else { sm.disabled=false; }
 }
+
+function abrirVeicDrop(){
+  filtrarVeicSelect();
+  document.getElementById('veicDropList').style.display='block';
+  _veicDropIdx = -1;
+}
+
+function fecharVeicDrop(){
+  document.getElementById('veicDropList').style.display='none';
+  _veicDropIdx = -1;
+}
+
+function filtrarVeicSelect(){
+  const q = document.getElementById('sVeicBusca').value.toLowerCase().trim();
+  const disponiveis = veiculos.filter(v=>v.status==='Disponível');
+  const filtrados = q
+    ? disponiveis.filter(v=>v.placa.toLowerCase().includes(q)||v.modelo.toLowerCase().includes(q)||v.marca.toLowerCase().includes(q))
+    : disponiveis;
+  const list = document.getElementById('veicDropList');
+  _veicDropIdx = -1;
+  if(!filtrados.length){
+    list.innerHTML='<div style="padding:12px;font-size:.83rem;color:var(--t3);text-align:center">Nenhum veículo encontrado</div>';
+    list.style.display='block';
+    return;
+  }
+  list.innerHTML = filtrados.map((v,i)=>`
+    <div class="veic-opt" data-id="${v.id}" data-label="${v.placa} — ${v.marca} ${v.modelo}"
+      onclick="selecionarVeic('${v.id}','${v.placa} — ${v.marca} ${v.modelo}')"
+      onmouseenter="this.style.background='var(--card2)'" onmouseleave="this.style.background=''"
+      style="padding:10px 13px;cursor:pointer;border-bottom:1px solid var(--b);font-size:.87rem;transition:background .12s">
+      <span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--t)">${v.placa}</span>
+      <span style="color:var(--t2);margin-left:6px">${v.marca} ${v.modelo} ${v.ano}</span>
+      <span style="float:right;font-size:.7rem;color:var(--t3)">${v.setor||''}</span>
+    </div>`).join('');
+  list.style.display='block';
+}
+
+function selecionarVeic(id, label){
+  document.getElementById('sVeiculo').value = id;
+  document.getElementById('sVeicBusca').value = label;
+  fecharVeicDrop();
+  onVeiculoSel();
+}
+
+function navVeicDrop(e){
+  const list = document.getElementById('veicDropList');
+  const opts = list.querySelectorAll('.veic-opt');
+  if(!opts.length) return;
+  if(e.key==='ArrowDown'){e.preventDefault();_veicDropIdx=Math.min(_veicDropIdx+1,opts.length-1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();_veicDropIdx=Math.max(_veicDropIdx-1,0);}
+  else if(e.key==='Enter'&&_veicDropIdx>=0){e.preventDefault();opts[_veicDropIdx].click();return;}
+  else if(e.key==='Escape'){fecharVeicDrop();return;}
+  opts.forEach((o,i)=>o.style.background=i===_veicDropIdx?'var(--card2)':'');
+  if(_veicDropIdx>=0)opts[_veicDropIdx].scrollIntoView({block:'nearest'});
+}
+
+// Fechar dropdown ao clicar fora
+document.addEventListener('click',e=>{
+  const wrap=document.getElementById('veicDropWrap');
+  if(wrap&&!wrap.contains(e.target))fecharVeicDrop();
+});
 
 function onVeiculoSel(){
   const id=document.getElementById('sVeiculo').value;
