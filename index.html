@@ -725,11 +725,20 @@ let removerTipo = '', removerId = '';
 
 window.addEventListener('DOMContentLoaded', () => {
   if (!localStorage.getItem('fc_url')) localStorage.setItem('fc_url', DEFAULT_SHEETS_URL);
+  // Sincroniza com a planilha em segundo plano assim que o app abre,
+  // para que a lista de motoristas (e veículos/viagens) já esteja
+  // atualizada mesmo em um dispositivo/navegador que nunca acessou antes.
+  const syncPromise = carregarDaPlanilha().catch(()=>{});
   setTimeout(() => {
     document.getElementById('splash').classList.add('hidden');
     const saved = localStorage.getItem('fc_session');
     if (saved) { try { S.user = JSON.parse(saved); iniciarApp(); } catch { showLogin(); } }
-    else showLogin();
+    else {
+      showLogin();
+      // Assim que a sincronização terminar, repopula o dropdown de
+      // motoristas na tela de login com os dados vindos da planilha.
+      syncPromise.then(() => { if (!S.user) showLogin(); });
+    }
   }, 2200);
 });
 
