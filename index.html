@@ -707,7 +707,7 @@ textarea{resize:vertical;min-height:70px}
 <script>
 'use strict';
 
-const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwKBvFMJdIzhQDcMlvPZMjBPbgfcG4C0C0LHplt7sAg7jEVlx2_086TZkj5AxiUxuMv/exec';
+const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycby7CFUGyRGtWnnlrBdRnfqWZ-vf4TEL7RjiPPFmTdmDsMmhHVbCicnOWYBZhC6B5KtR/exec';
 
 // Senhas padrão (ficam no localStorage após 1ª vez)
 const SENHA_ADMIN_DEFAULT = btoa('admin123');
@@ -715,7 +715,14 @@ const SENHA_SUP_DEFAULT   = btoa('super123');
 
 function getSenhaAdmin(){ return localStorage.getItem('fc_senha_admin') || SENHA_ADMIN_DEFAULT; }
 function getSenhaSup(){   return localStorage.getItem('fc_senha_sup')   || SENHA_SUP_DEFAULT;   }
-function getSenhaMot(id){ return localStorage.getItem('fc_senha_mot_'+id) || ''; }
+function getSenhaMot(id){
+  // A senha agora vem sincronizada da planilha (campo "senha" do motorista),
+  // para funcionar em qualquer dispositivo. Mantemos o localStorage antigo
+  // só como fallback, para não perder senhas já cadastradas antes da correção.
+  const m = motoristas.find(x=>x.id===id);
+  if (m && m.senha) return m.senha;
+  return localStorage.getItem('fc_senha_mot_'+id) || '';
+}
 
 let veiculos   = JSON.parse(localStorage.getItem('fc_veiculos')   || 'null') || [];
 let motoristas = JSON.parse(localStorage.getItem('fc_motoristas') || 'null') || [];
@@ -1312,10 +1319,16 @@ function salvarMotorista(){
   if(senha&&senha!==senha2){err.textContent='As senhas não conferem.';err.classList.remove('hidden');return;}
   err.classList.add('hidden');
   const mid=id||'M'+Date.now();
-  const m={id:mid,nome,cpf:document.getElementById('fmCpf').value,telefone:document.getElementById('fmTel').value,cnh:document.getElementById('fmCnh').value,categoria:document.getElementById('fmCat').value,vencCnh:document.getElementById('fmVenc').value,matricula:document.getElementById('fmMat').value,status:document.getElementById('fmSt').value};
-  // Salva senha se foi preenchida
+  const idxExistente=motoristas.findIndex(x=>x.id===mid);
+  // Se a senha foi preenchida agora, usa ela (com hash). Se o campo ficou em
+  // branco (editando um motorista já existente), mantém a senha que já
+  // estava salva na planilha, em vez de apagar.
+  const senhaFinal = senha ? btoa(senha) : (idxExistente!==-1 ? (motoristas[idxExistente].senha||'') : '');
+  const m={id:mid,nome,cpf:document.getElementById('fmCpf').value,telefone:document.getElementById('fmTel').value,cnh:document.getElementById('fmCnh').value,categoria:document.getElementById('fmCat').value,vencCnh:document.getElementById('fmVenc').value,matricula:document.getElementById('fmMat').value,status:document.getElementById('fmSt').value,senha:senhaFinal};
+  // Mantém compatibilidade com o método antigo (não é mais a fonte da
+  // verdade, mas evita perder senha cadastrada antes desta correção).
   if(senha) localStorage.setItem('fc_senha_mot_'+mid, btoa(senha));
-  const idx=motoristas.findIndex(x=>x.id===mid);
+  const idx=idxExistente;
   if(idx!==-1)motoristas[idx]=m;else motoristas.push(m);
   localStorage.setItem('fc_motoristas',JSON.stringify(motoristas));
   fecharFormMotorista();
