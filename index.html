@@ -909,7 +909,7 @@ async function carregarDaPlanilha() {
       localStorage.setItem('fc_veiculos',JSON.stringify(veiculos));
     }
     if(rm.success&&rm.data.length>0){
-      motoristas=rm.data.map(m=>({id:m.id,nome:m.nome,cpf:m.cpf,telefone:m.telefone,cnh:m.cnh,categoria:m.categoria,vencCnh:m.venccnh,matricula:m.matricula,status:m.status}));
+      motoristas=rm.data.map(m=>({id:m.id,nome:m.nome,cpf:m.cpf,telefone:m.telefone,cnh:m.cnh,categoria:m.categoria,vencCnh:m.venccnh,matricula:m.matricula,status:m.status,senha:m.senha}));
       localStorage.setItem('fc_motoristas',JSON.stringify(motoristas));
     }
     if(rvg.success&&rvg.data.length>0){
